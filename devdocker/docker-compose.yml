@@ -1,0 +1,47 @@
+name: aurumv2_devdocker
+services:
+  app:
+    depends_on:
+      database:
+        condition: service_healthy
+    user: ${UID}:${GID}
+    working_dir: /home/node/app
+    image: node:21.7-bookworm
+    ports:
+      - "127.0.0.1:5173:5173"
+    env_file:
+      - path: ./.app.env
+        required: true
+    command: npm run dev --host
+    volumes:
+      - ../:/home/node/app
+
+  database_init: #we use this container to fix the permissions of the database volume to make it usable for local user
+    image: postgres:16.2-bookworm
+    volumes:
+      - ./data/pgsql:/var/lib/postgresql/data
+    env_file:
+      - path: ./.database.env
+        required: true
+    entrypoint:
+      - sh
+      - -c
+      - |
+        chown -R ${UID}:${GID} /var/lib/postgresql/data
+  database:
+    depends_on:
+      - database_init
+    user: ${UID}:${GID}
+    image: postgres:16.2-bookworm
+    ports:
+      - "127.0.0.1:5432:5432"
+    env_file:
+      - path: ./.database.env
+        required: true
+    volumes:
+        - ./data/pgsql:/var/lib/postgresql/data
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
