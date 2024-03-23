@@ -10,7 +10,6 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^3.1.1",
 		"@sveltejs/adapter-node": "^5.0.1",
 		"@sveltejs/kit": "^2.5.4",
 		"@sveltejs/vite-plugin-svelte": "^3.0.2",
@@ -23,7 +22,7 @@
 		"tailwindcss": "^3.4.1",
 		"tslib": "^2.6.2",
 		"typescript": "^5.4.3",
-		"vite": "^5.2.2"
+		"vite": "^5.2.4"
 	},
 	"type": "module",
 	"dependencies": {
