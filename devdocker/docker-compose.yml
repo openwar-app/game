@@ -10,6 +10,8 @@ services:
     ports:
       - "127.0.0.1:5173:5173"
     env_file:
+      - path: ./.database.env
+        required: true
       - path: ./.app.env
         required: true
     command: npm run dev --host
