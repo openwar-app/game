@@ -1,4 +1,4 @@
-import {type BaseEntity, DataSource, EntitySchema} from "typeorm";
+import {DataSource} from "typeorm";
 const entitiesLoader = import.meta.glob(['./Entities/*.ts']);
 const entitiesPromises = Object.values(entitiesLoader).map((loader) => loader());
 const entities = (await Promise.all(entitiesPromises)).map((entity) => (entity as any).default);

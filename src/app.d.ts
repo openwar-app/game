@@ -1,9 +1,13 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+import type {Session} from "$lib/server/Session/types/TypeSession";
+
 declare global {
 	namespace App {
 		// interface Error {}
-		// interface Locals {}
+		interface Locals {
+			session: Session
+		}
 		// interface PageData {}
 		// interface PageState {}
 		// interface Platform {}
