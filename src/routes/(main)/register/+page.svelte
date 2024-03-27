@@ -12,24 +12,54 @@
     let charname : string = $state('');
     let race : keyof typeof RaceEnum = $state('HUMAN');
 
-    let error : any = $state(null);
-
-    $effect(async () => {
-        let res = await fetch(location.href, {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({action: 'validatemail', email})
-        });
-        error = await res.json();
-    });
+    let error : { email: any, password: any } = $state({email: null, password: null});
 
     $effect(() => {
-        console.log(error);
-    })
+        email;
+        (async () => {
+            if(email === '') return error.email = null;
+            let res = await fetch(location.href, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({action: 'validatemail', email})
+            });
+            error.email = await res.json();
+        })();
+    });
+
+    $effect(()=>{
+
+        password = password.trim();
+        passwordRepeat = passwordRepeat.trim();
+        if(password === '') { error.password = null; return; }
+
+        if(password.length < 8) {
+            error.password = {status: 'error', error: 'website.register.password-too-short'};
+            return;
+        }
+        let complexity = 0;
+        if(/[a-z]/.test(password)) complexity++;
+        if(/[A-Z]/.test(password)) complexity++;
+        if(/[0-9]/.test(password)) complexity++;
+        if(/[^a-zA-Z0-9]/.test(password)) complexity++;
+        if(complexity < 3) {
+            error.password = {status: 'error', error: 'website.register.password-too-simple'};
+            return;
+        }
+        if(password !== passwordRepeat) {
+            error.password = {status: 'error', error: 'website.register.password-mismatch'};
+        } else {
+            error.password = null;
+        }
+
+    });
 
 
+    $effect(() => {
+        console.log(error.email);
+    });
 
 </script>
 <style lang="postcss">
@@ -41,9 +71,15 @@
     <title>{$t('website.title.register')}</title>
 </svelte:head>
 
-<div>
+<div class="">
     <h3 class="text-xl mb-4">{$t('website.title.register')}</h3>
-    <div class="grid grid-cols-2 gap-4">
+    {#if error.email && error.email.status === 'error'}
+        <p class="text-red-500">{$t(error.email.error)}</p>
+    {/if}
+    {#if error.password && error.password.status === 'error'}
+        <p class="text-red-500">{$t(error.password.error)}</p>
+    {/if}
+    <div class="w-full grid grid-cols-[max-content_auto] grid- gap-4">
         <label for="input-email">{$t('website.register.email')}</label>
         <input bind:value={email} type="email" id="input-email" />
 

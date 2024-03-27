@@ -5,7 +5,6 @@ export const POST: RequestHandler = async ({request, cookies, locals}) => {
     let language = await request.text();
     let locs = locales.get();
     if(locs.includes(language)) {
-        console.log('change lang', language);
         cookies.set('language', language, { path: '/' });
         locals.language = language;
     }

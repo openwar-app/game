@@ -21,7 +21,11 @@
     "name-small": "This name will be shown ingame",
     "email": "Email: ",
     "password": "Password: ",
-    "password-repeat": "Repeat password: "
+    "password-repeat": "Repeat password: ",
+    "invalid_email": "Invalid email address",
+    "password-too-short": "Password too short, must be at least 8 characters long",
+    "password-too-simple": "Password too simple, must match at least 3 of the following criteria: uppercase letter, lowercase letter, number, special character",
+    "password-mismatch": "Passwords do not match"
   }
 
 
