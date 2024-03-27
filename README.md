@@ -5,6 +5,10 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=openwar-app_game&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=openwar-app_game)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=openwar-app_game&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=openwar-app_game)
 
+
+## OpenWar DEV Server
+Visit the official OpenWar DEV Server at [openwar.org](https://dev.openwar.org)
+
 ## How to develop
 Edit the `./devdocker/.env` file to match your userid and groupid. 
 This is needed to make sure that the files created by the docker container are owned by you and not by root.
