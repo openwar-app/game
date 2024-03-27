@@ -12,6 +12,24 @@
     let charname : string = $state('');
     let race : keyof typeof RaceEnum = $state('HUMAN');
 
+    let error : any = $state(null);
+
+    $effect(async () => {
+        let res = await fetch(location.href, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({action: 'validatemail', email})
+        });
+        error = await res.json();
+    });
+
+    $effect(() => {
+        console.log(error);
+    })
+
+
 
 </script>
 <style lang="postcss">

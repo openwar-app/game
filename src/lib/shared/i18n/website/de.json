@@ -11,7 +11,8 @@
     "home": "Startseite",
     "login": "Login",
     "register": "Registration",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "choose_language": "Sprache wählen: "
   },
   "register": {
       "select-race": "Wähle deine Rasse: ",

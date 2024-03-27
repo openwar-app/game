@@ -6,10 +6,12 @@ import { loadTranslations, locales } from '$lib/translations';
 export const load: LayoutServerLoad = async ({locals, request, url}) => {
 
     let language = locals.session.language ?? 'auto';
+
+    const serverLocales = locales.get();
     if(language === 'auto') {
         //detect language
         const browserLanguages = (request.headers.get('accept-language') ?? 'auto').split(',');
-        const serverLocales = locales.get();
+
         for (const localeStr of browserLanguages) {
             const locale = localeStr.split(';')[0];
             if (serverLocales.includes(locale)) {
@@ -28,6 +30,7 @@ export const load: LayoutServerLoad = async ({locals, request, url}) => {
 
     return {
         language: locals.session.language,
-        reqTime: Date.now()
+        reqTime: Date.now(),
+        serverLocales
     }
 };

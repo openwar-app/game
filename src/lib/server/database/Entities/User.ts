@@ -24,4 +24,17 @@ export default class User extends BaseEntity implements UserData {
     @Column("int")
     xp!: number;
 
+
+
+    static async validateEmail(email: string) : Promise<true|string> {
+        const findUser = await User.exists({
+            where: {
+                email
+            }
+        });
+        if(findUser) {
+            return 'website.register.email_already_exists';
+        }
+        return true;
+    }
 }
