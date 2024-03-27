@@ -24,6 +24,11 @@ export default defineConfig({
 		{
 			name: 'injectWebsocketServer',
 			closeBundle: async function(){
+				//ls -la ./buid
+				const fileList = fs.readdirSync('./');
+				console.log(fileList);
+				const fileList2 = fs.readdirSync('./build');
+				console.log(fileList2);
 				//rename ./build/index.js to ./build/node-index.js
 				fs.renameSync('./build/index.js', './build/node-index.js');
 				//copy ./src/lib/server/WebSocketUtil.js to ./build/WebSocketUtil.js
