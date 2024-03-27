@@ -23,7 +23,7 @@ export default defineConfig({
 		},
 		{
 			name: 'injectWebsocketServer',
-			closeBundle: async function(){
+			buildEnd: async function(){
 				//ls -la ./buid
 				const fileList = fs.readdirSync('./');
 				console.log(fileList);
