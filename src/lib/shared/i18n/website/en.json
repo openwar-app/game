@@ -15,7 +15,12 @@
   },
 
   "register": {
-    "select-race": "Choose your race: "
+    "select-race": "Choose your race: ",
+    "name": "Character name: ",
+    "name-small": "This name will be shown ingame",
+    "email": "Email: ",
+    "password": "Password: ",
+    "password-repeat": "Repeat password: "
   }
 
 

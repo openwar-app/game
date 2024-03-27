@@ -43,6 +43,7 @@ export const createWSSGlobalInstance = () => {
 
 
     wss.on('connection', (ws) => {
+        // @ts-ignore
         ws.socketId = nanoid();
     });
 

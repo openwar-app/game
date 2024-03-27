@@ -14,6 +14,11 @@
     "faq": "FAQ"
   },
   "register": {
-      "select-race": "Wähle deine Rasse: "
+      "select-race": "Wähle deine Rasse: ",
+      "name": "Charactername: ",
+      "name-small": "Dieser wird im Spiel angezeigt",
+      "email": "Email: ",
+      "password": "Passwort: ",
+      "password-repeat": "Passwort wiederholen: "
   }
 }
