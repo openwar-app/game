@@ -40,10 +40,10 @@
         <div class="w-56 mr-2 flex-grow-0 flex-shrink-0">
 
                 <ul class="nav">
-                    <li class:active={$page.url.pathname === '/'} ><a href="/">{$t('website.home')}</a></li>
-                    <li class:active={$page.url.pathname === '/login'} ><a href="/login">{$t('website.login')}</a></li>
-                    <li class:active={$page.url.pathname === '/register'}><a href="/register">{$t('website.register')}</a></li>
-                    <li class:active={$page.url.pathname === '/faq'}><a href="/faq">{$t('website.faq')}</a></li>
+                    <li class:active={$page.url.pathname === '/'} ><a href="/">{$t('website.nav.home')}</a></li>
+                    <li class:active={$page.url.pathname === '/login'} ><a href="/login">{$t('website.nav.login')}</a></li>
+                    <li class:active={$page.url.pathname === '/register'}><a href="/register">{$t('website.nav.register')}</a></li>
+                    <li class:active={$page.url.pathname === '/faq'}><a href="/faq">{$t('website.nav.faq')}</a></li>
                 </ul>
 
         </div>
