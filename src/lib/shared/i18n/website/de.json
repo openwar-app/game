@@ -11,9 +11,19 @@
     "home": "Startseite",
     "login": "Login",
     "register": "Registration",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "choose_language": "Sprache wählen: "
   },
   "register": {
-      "select-race": "Wähle deine Rasse: "
+      "select-race": "Wähle deine Rasse: ",
+      "name": "Charactername: ",
+      "name-small": "Dieser wird im Spiel angezeigt",
+      "email": "Email: ",
+      "password": "Passwort: ",
+      "password-repeat": "Passwort wiederholen: ",
+      "invalid_email": "Ungültige Email-Adresse",
+      "password-too-short": "Passwort zu kurz, mindestens 8 Zeichen",
+      "password-too-simple": "Passwort zu einfach, muss mindestens 3 der folgenden Kriterien erfüllen: Großbuchstabe, Kleinbuchstabe, Zahl, Sonderzeichen",
+      "password-mismatch": "Passwords do not match"
   }
 }

@@ -38,3 +38,12 @@ jobs:
         with:
           push: true
           tags: ghcr.io/${{ github.repository }}:dev
+
+      - name: Remove untagged container images
+        uses: actions/delete-package-versions@v4.1.1
+        with:
+          package-name: 'game'
+          package-type: 'container'
+          delete-only-untagged-versions: 'true'
+          min-versions-to-keep: 0
+          token: ${{ secrets.GITHUB_TOKEN }}

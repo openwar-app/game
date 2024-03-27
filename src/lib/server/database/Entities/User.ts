@@ -1,14 +1,19 @@
-import {Entity, Column, BaseEntity, PrimaryGeneratedColumn} from "typeorm"
+import {Entity, Column, BaseEntity, PrimaryGeneratedColumn, Unique} from "typeorm"
 import type {UserData} from "$lib/shared/User/UserData";
 import type {RaceEnum} from "$lib/shared/races/RaceEnum";
 
 @Entity()
+@Unique('user_email', ["email"])
+@Unique('user_charname', ["charname"])
 export default class User extends BaseEntity implements UserData {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
 
     @Column("varchar")
-    username!: string
+    email!: string
+
+    @Column("varchar")
+    charname!: string
 
     @Column("varchar")
     password!: string;
@@ -18,5 +23,8 @@ export default class User extends BaseEntity implements UserData {
 
     @Column("int")
     xp!: number;
+
+
+
 
 }

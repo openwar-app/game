@@ -1,7 +1,7 @@
 import type {RaceEnum} from "$lib/shared/races/RaceEnum";
 
 export interface UserData {
-    username: string;
+    charname: string;
     race: RaceEnum;
     xp: number;
 

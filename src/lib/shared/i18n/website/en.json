@@ -5,7 +5,8 @@
     "home": "Home",
     "login": "Login",
     "register": "Register",
-    "faq": "FAQ"
+    "faq": "FAQ",
+    "choose_language": "Choose language: "
   },
 
   "introduction_text": "OpenWar is a free roleplay browsergame with a medieval fantasy setting. You can explore the world, fight monsters, complete quests, trade with other players and much more. <a href=\"/register\">Register now</a> and start your adventure!",
@@ -15,7 +16,16 @@
   },
 
   "register": {
-    "select-race": "Choose your race: "
+    "select-race": "Choose your race: ",
+    "name": "Character name: ",
+    "name-small": "This name will be shown ingame",
+    "email": "Email: ",
+    "password": "Password: ",
+    "password-repeat": "Repeat password: ",
+    "invalid_email": "Invalid email address",
+    "password-too-short": "Password too short, must be at least 8 characters long",
+    "password-too-simple": "Password too simple, must match at least 3 of the following criteria: uppercase letter, lowercase letter, number, special character",
+    "password-mismatch": "Passwords do not match"
   }
 
 

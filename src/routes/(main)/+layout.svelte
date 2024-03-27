@@ -1,9 +1,20 @@
 <script lang="ts">
-    import { t } from '$lib/translations';
-
+    import { t, locale } from '$lib/translations';
+    import { getContext } from 'svelte';
     import { page } from '$app/stores';
 
     let isActive: boolean = true;
+
+    let locales : string[] = getContext('serverLocales') ?? ['en'];
+
+    let currentLocale = $state($locale);
+    $effect(() => {
+        locale.set(currentLocale);
+        fetch('/language', {
+            method: 'POST',
+            body: currentLocale
+        });
+    });
 </script>
 <style lang="postcss">
 
@@ -46,8 +57,19 @@
                     <li class:active={$page.url.pathname === '/faq'}><a href="/faq">{$t('website.nav.faq')}</a></li>
                 </ul>
 
+            <div class="my-4">
+                <span>{$t('website.nav.choose_language')}</span>
+                <select bind:value={currentLocale} class="w-full bg-gray-200 border border-gray-600 px-2 py-1">
+                    {#each locales as locale}
+                        <option value={locale}>{$t('locale.'+locale)}</option>
+                    {/each}
+                </select>
+
+            </div>
+
+
         </div>
-        <div class="px-4 border border-gray-600 border-r-0 border-t-0 border-b-0">
+        <div class="px-4 border border-gray-600 border-r-0 border-t-0 border-b-0 w-full">
             <slot />
         </div>
     </div>
