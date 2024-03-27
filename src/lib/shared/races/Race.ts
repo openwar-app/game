@@ -7,7 +7,7 @@ export class Race {
     constructor() {
         throw Error("cannot instantiate race class")
     }
-    static raceName:RaceEnum;
+    static readonly raceName:keyof typeof RaceEnum;
     static BASE_STATS:UserStats;
 
     static calculateStats(user: User): UserStats {

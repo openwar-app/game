@@ -1,4 +1,4 @@
-import type {ClassEnumString} from "$lib/shared/races/ClassEnum";
+import type {ClassEnum} from "$lib/shared/races/ClassEnum";
 
 export class Class {
     constructor() {
@@ -7,6 +7,6 @@ export class Class {
         }
     }
 
-    className!:ClassEnumString;
+    className!:keyof typeof ClassEnum;
 
 }

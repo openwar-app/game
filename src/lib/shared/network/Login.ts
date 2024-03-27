@@ -1,8 +1,8 @@
-import {NetPacket} from "$lib/network/NetPacket";
+import {NetPacket} from "$lib/shared/network/NetPacket";
 
 
 export class Login extends NetPacket {
-    static TYPE = 'Login'
+    static readonly TYPE = 'Login'
     username: string;
     password: string;
 

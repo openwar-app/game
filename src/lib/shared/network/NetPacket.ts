@@ -1,6 +1,6 @@
 export class NetPacket {
     static ALL_TYPES: {[key: string]: typeof NetPacket} = {};
-    static TYPE = 'Packet'
+    static readonly TYPE : string = 'Packet'
     type: string;
 
     protected constructor(type: string) {
