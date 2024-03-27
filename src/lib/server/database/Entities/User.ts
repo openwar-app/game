@@ -19,7 +19,7 @@ export default class User extends BaseEntity implements UserData {
     password!: string;
 
     @Column("varchar")
-    race!: RaceEnum
+    race!: keyof typeof RaceEnum
 
     @Column("int")
     xp!: number;
