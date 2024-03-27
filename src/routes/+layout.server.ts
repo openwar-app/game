@@ -1,7 +1,6 @@
 import type { LayoutServerLoad } from './$types';
 
 import { loadTranslations, locales } from '$lib/translations';
-import {layout} from "$lib/server/Config/Layout";
 
 
 export const load: LayoutServerLoad = async ({locals, request, url}) => {
@@ -28,7 +27,7 @@ export const load: LayoutServerLoad = async ({locals, request, url}) => {
 
 
     return {
-        layout,
-        language: locals.session.language
+        language: locals.session.language,
+        reqTime: Date.now()
     }
 };

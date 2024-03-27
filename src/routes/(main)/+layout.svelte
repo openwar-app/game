@@ -1,0 +1,55 @@
+<script lang="ts">
+    import { t } from '$lib/translations';
+
+    import { page } from '$app/stores';
+
+    let isActive: boolean = true;
+</script>
+<style lang="postcss">
+
+
+    :global(body) {
+
+            :global(a) {
+                @apply text-red-800 hover:text-red-600 hover:underline font-bold;
+            }
+
+    }
+    .nav {
+        li {
+            @apply py-1 px-4 bg-gray-200 my-1 border border-transparent;
+            &.active {
+                background: linear-gradient(theme('colors.gray.300'), theme('colors.gray.200'));
+                @apply border-gray-400;
+                a {
+                    @apply text-red-600;
+                }
+            }
+            a {
+                @apply text-red-800 hover:text-red-600 hover:underline font-bold;
+            }
+        }
+    }
+</style>
+<div class="container mx-auto">
+    <div class="header w-full bg-red-800 text-white px-4 py-4 my-2">
+        <h1 class="text-3xl">OpenWar</h1>
+        <h2 class="text-2xl">{$t('website.subheader')}</h2>
+    </div>
+    <div class="flex w-full">
+        <div class="w-56 mr-2 flex-grow-0 flex-shrink-0">
+
+                <ul class="nav">
+                    <li class:active={$page.url.pathname === '/'} ><a href="/">{$t('website.home')}</a></li>
+                    <li class:active={$page.url.pathname === '/login'} ><a href="/login">{$t('website.login')}</a></li>
+                    <li class:active={$page.url.pathname === '/register'}><a href="/register">{$t('website.register')}</a></li>
+                    <li class:active={$page.url.pathname === '/faq'}><a href="/faq">{$t('website.faq')}</a></li>
+                </ul>
+
+        </div>
+        <div class="px-4 border border-gray-600 border-r-0 border-t-0 border-b-0">
+            <slot />
+        </div>
+    </div>
+
+</div>

@@ -9,4 +9,5 @@ html,
 body {
     font-size: 16px;
     @apply font-open-sans;
+    @apply bg-neutral-100;
 }

@@ -29,6 +29,7 @@ class TypeORM {
                 database: process.env.POSTGRES_DB,
                 entities,
                 synchronize: true,
+                installExtensions: true,
             }).initialize();
         }
     }

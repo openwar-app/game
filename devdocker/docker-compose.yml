@@ -1,4 +1,4 @@
-name: aurumv2_devdocker
+name: openwar_devdocker
 services:
   app:
     depends_on:
