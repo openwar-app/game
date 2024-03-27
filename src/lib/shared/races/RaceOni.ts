@@ -7,7 +7,7 @@ export class RaceOni extends Race {
         super();
     }
 
-    static raceName = RaceEnum.ONI;
+    static readonly raceName = RaceEnum.ONI;
 
     static BASE_STATS: UserStats = {
         agility: 3,

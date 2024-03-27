@@ -1,6 +1,6 @@
-import {Login} from "$lib/network/Login";
+import {Login} from "$lib/shared/network/Login";
 class Packet {
-    static Login = Login;
+    static readonly Login = Login;
 }
 
 export {Packet};

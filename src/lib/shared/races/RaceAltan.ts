@@ -7,7 +7,7 @@ export class RaceAltan extends Race {
         super();
     }
 
-    static raceName = RaceEnum.ALTAN;
+    static readonly raceName = RaceEnum.ALTAN;
 
     static BASE_STATS: UserStats = {
         agility: 3,

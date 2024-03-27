@@ -8,11 +8,11 @@ import {RaceAltan} from "$lib/shared/races/RaceAltan";
 
 
 class Races {
-    static ONI = RaceOni;
-    static KRION = RaceKrion;
-    static HUMAN = RaceHuman;
-    static TURAN = RaceTuran;
-    static ALTAN = RaceAltan;
+    static readonly ONI = RaceOni;
+    static readonly KRION = RaceKrion;
+    static readonly HUMAN = RaceHuman;
+    static readonly TURAN = RaceTuran;
+    static readonly ALTAN = RaceAltan;
 
     static getRaces() : (typeof Race)[] {
         return [RaceOni, RaceKrion, RaceHuman, RaceTuran, RaceAltan];

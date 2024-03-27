@@ -7,7 +7,7 @@ export class RaceKrion extends Race {
         super();
     }
 
-    static raceName = RaceEnum.KRION;
+    static readonly raceName = RaceEnum.KRION;
 
     static BASE_STATS: UserStats = {
         agility: 3,
