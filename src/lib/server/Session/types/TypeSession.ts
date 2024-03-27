@@ -6,5 +6,4 @@ export type Session = {
 	};
 	lastUpdated: Date;
 	sessionId: string;
-	language: string;
 }

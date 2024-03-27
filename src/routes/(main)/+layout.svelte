@@ -10,6 +10,10 @@
     let currentLocale = $state($locale);
     $effect(() => {
         locale.set(currentLocale);
+        fetch('/language', {
+            method: 'POST',
+            body: currentLocale
+        });
     });
 </script>
 <style lang="postcss">
