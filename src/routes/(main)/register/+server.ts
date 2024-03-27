@@ -6,14 +6,14 @@ export const POST: RequestHandler = async ({request}) => {
     if(ctype === 'application/json') {
         const body = await request.json();
         switch(body.action ?? '') {
-            case 'validatemail':
+            case 'validatemail': {
                 const validate = await User.validateEmail(body.email, true);
-                if(validate !== true) {
-                    return json({ status:'error', error: validate });
+                if (validate !== true) {
+                    return json({status: 'error', error: validate});
                 } else {
-                    return json({ status: 'ok'});
+                    return json({status: 'ok'});
                 }
-
+            }
         }
     }
 
