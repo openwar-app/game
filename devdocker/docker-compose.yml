@@ -23,7 +23,6 @@ services:
         interval: 5s
         timeout: 5s
         retries: 5
-        start_period: 3s
   database_init: #we use this container to fix the permissions of the database volume to make it usable for local user
     image: postgres:16.2-bookworm
     volumes:
@@ -54,4 +53,3 @@ services:
         interval: 5s
         timeout: 5s
         retries: 5
-        start_period: 3s
