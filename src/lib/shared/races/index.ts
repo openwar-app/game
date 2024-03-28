@@ -1,5 +1,4 @@
 import {Race} from "$lib/shared/races/Race";
-import {RaceEnum} from "$lib/shared/races/RaceEnum";
 import {RaceOni} from "$lib/shared/races/RaceOni";
 import {RaceKrion} from "$lib/shared/races/RaceKrion";
 import {RaceHuman} from "$lib/shared/races/RaceHuman";

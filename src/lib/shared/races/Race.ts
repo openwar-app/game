@@ -8,7 +8,7 @@ export class Race {
         throw Error("cannot instantiate race class")
     }
     static readonly raceName:keyof typeof RaceEnum;
-    static BASE_STATS:UserStats;
+    static readonly BASE_STATS:UserStats;
 
     static calculateStats(user: User): UserStats {
         return structuredClone(this.BASE_STATS);
