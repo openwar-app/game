@@ -11,3 +11,26 @@ body {
     @apply font-open-sans;
     @apply bg-neutral-100;
 }
+
+
+.btn {
+    @apply px-4 py-2;
+    @apply bg-red-800;
+    @apply text-white;
+    @apply rounded-md;
+    @apply shadow-md;
+
+    @apply transition-colors;
+
+    &:hover {
+        @apply bg-red-700 cursor-pointer;
+    }
+
+    &:active {
+        @apply bg-red-900;
+    }
+
+    &:disabled {
+        @apply bg-gray-400 text-black cursor-not-allowed;
+    }
+}

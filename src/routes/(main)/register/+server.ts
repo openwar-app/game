@@ -14,6 +14,14 @@ export const POST: RequestHandler = async ({request}) => {
                     return json({status: 'ok'});
                 }
             }
+            case 'validatecharname': {
+                const validate = await User.validateCharname(body.charname, true);
+                if (validate !== true) {
+                    return json({status: 'error', error: validate});
+                } else {
+                    return json({status: 'ok'});
+                }
+            }
         }
     }
 

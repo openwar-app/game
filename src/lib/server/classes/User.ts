@@ -19,4 +19,31 @@ export class User extends UserEntity {
         }
         return true;
     }
+
+    static async validateCharname(charname: string, failIfExists: boolean) {
+        charname = charname.trim();
+        if(charname.length < 1) {
+            return 'website.register.charname_too_short';
+        }
+        if(charname.length > 16) {
+            return 'website.register.charname_too_long';
+        }
+        if(!charname.match(/^[a-zA-Z0-9 ]+$/)) {
+            return 'website.register.charname_invalid';
+        }
+
+        if(failIfExists) {
+            const findUser = await UserEntity.exists({
+                where: {
+                    charname
+                }
+            });
+            if(findUser) {
+                return 'website.register.charname_already_exists';
+            }
+        }
+
+
+        return true;
+    }
 }

@@ -1,5 +1,5 @@
 <script lang="ts">
-
+    import { goto } from '$app/navigation';
     import type { PageData } from './$types';
     import {t} from "$lib/translations";
     import type {RaceEnum} from "$lib/shared/races/RaceEnum";
@@ -12,7 +12,9 @@
     let charname : string = $state('');
     let race : keyof typeof RaceEnum = $state('HUMAN');
 
-    let error : { email: any, password: any } = $state({email: null, password: null});
+    type errorType = { status:'ok'|'error', error?: string }|null;
+
+    let error : { email: errorType, password: errorType, charname: errorType } = $state({email: null, password: null, charname:null});
 
     $effect(() => {
         email;
@@ -26,6 +28,21 @@
                 body: JSON.stringify({action: 'validatemail', email})
             });
             error.email = await res.json();
+        })();
+    });
+
+    $effect(() => {
+        charname;
+        (async () => {
+            if(charname === '') return error.charname = null;
+            let res = await fetch(location.href, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                body: JSON.stringify({action: 'validatecharname', charname})
+            });
+            error.charname = await res.json();
         })();
     });
 
@@ -51,15 +68,25 @@
         if(password !== passwordRepeat) {
             error.password = {status: 'error', error: 'website.register.password-mismatch'};
         } else {
-            error.password = null;
+            error.password = {status: 'ok'};
         }
 
     });
 
-
-    $effect(() => {
-        console.log(error.email);
-    });
+    async function register() {
+        let res = await fetch(location.href, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({action: 'register', email, password, charname, race})
+        });
+        let data = await res.json();
+        if (data.status === 'ok') {
+            goto('/register-success', {replaceState: true});
+            return;
+        }
+    }
 
 </script>
 <style lang="postcss">
@@ -78,6 +105,9 @@
     {/if}
     {#if error.password && error.password.status === 'error'}
         <p class="text-red-500">{$t(error.password.error)}</p>
+    {/if}
+    {#if error.charname && error.charname.status === 'error'}
+        <p class="text-red-500">{$t(error.charname.error)}</p>
     {/if}
     <div class="w-full grid grid-cols-[max-content_auto] grid- gap-4">
         <label for="input-email">{$t('website.register.email')}</label>
@@ -99,6 +129,9 @@
                 <option value={race}>{$t('race.' + race)}</option>
             {/each}
         </select>
+
+
+        <button class="btn btn-red" disabled={!(error.charname?.status === 'ok' && error.email?.status === 'ok' && error.password?.status === 'ok')}>{$t('website.register.buttonText')}</button>
     </div>
 
 </div>

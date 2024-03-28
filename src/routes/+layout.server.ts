@@ -21,8 +21,11 @@ export const load: LayoutServerLoad = async ({locals, request, url, cookies}) =>
                 break;
             }
         }
+        if(language === 'auto') {
+            language = 'en';
+            cookies.set('language', language, { path: '/' });
+        }
     }
-
     const { pathname } = url;
     const initLocale = language; // get from cookie, user session, ...
     await loadTranslations(initLocale, pathname); // keep this just before the `return`
