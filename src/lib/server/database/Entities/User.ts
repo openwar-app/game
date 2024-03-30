@@ -1,6 +1,6 @@
 import {Entity, Column, BaseEntity, PrimaryGeneratedColumn, Unique} from "typeorm"
 import type {UserData} from "$lib/shared/User/UserData";
-import type {RaceEnum} from "$lib/shared/races/RaceEnum";
+import {RaceEnum} from "$lib/shared/races/RaceEnum";
 
 @Entity()
 @Unique('user_email', ["email"])
@@ -18,10 +18,14 @@ export default class User extends BaseEntity implements UserData {
     @Column("varchar")
     password!: string;
 
-    @Column("varchar")
+    @Column({
+        type: "enum",
+        enum: RaceEnum,
+        default: RaceEnum.HUMAN
+    })
     race!: keyof typeof RaceEnum
 
-    @Column("int")
+    @Column("int", {default: 0})
     xp!: number;
 
 

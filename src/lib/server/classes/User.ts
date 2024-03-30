@@ -1,6 +1,21 @@
 import UserEntity from "$lib/server/database/Entities/User";
 import emailValidator from "email-validator";
-export class User extends UserEntity {
+import argon2 from "argon2";
+export class User {
+    private _user: UserEntity;
+
+    private constructor(user: UserEntity) {
+        this._user = user;
+    }
+
+    static async create(data: Partial<UserEntity>) {
+        let user = new UserEntity();
+        Object.assign(user, data);
+        user.password = await argon2.hash(user.password);
+        await user.save();
+        return new User(user);
+    }
+
     static async validateEmail(email: string, failIfExists:boolean=false) : Promise<true|string> {
         const validEmail = emailValidator.validate(email);
         if(!validEmail) {
@@ -42,8 +57,8 @@ export class User extends UserEntity {
                 return 'website.register.charname_already_exists';
             }
         }
-
-
         return true;
     }
+
+
 }

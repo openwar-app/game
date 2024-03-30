@@ -16,6 +16,9 @@
 
     let error : { email: errorType, password: errorType, charname: errorType } = $state({email: null, password: null, charname:null});
 
+
+    let registerButtonDisabled = $derived(!(error.charname?.status === 'ok' && error.email?.status === 'ok' && error.password?.status === 'ok'));
+
     $effect(() => {
         email;
         (async () => {
@@ -131,7 +134,7 @@
         </select>
 
 
-        <button class="btn btn-red" disabled={!(error.charname?.status === 'ok' && error.email?.status === 'ok' && error.password?.status === 'ok')}>{$t('website.register.buttonText')}</button>
+        <button on:click={register} class="btn btn-red" disabled={registerButtonDisabled}>{$t('website.register.buttonText')}</button>
     </div>
 
 </div>
