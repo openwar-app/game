@@ -2,7 +2,19 @@ FROM node:21.7-bookworm AS build
 
 WORKDIR /app
 # Create app directory
-ADD ./ /app
+ADD ./src /app/src
+ADD ./static /app/static
+ADD ./package.json /app
+ADD ./package-lock.json /app
+ADD ./postcss.config.js /app
+ADD ./tailwind.config.js /app
+ADD ./tsconfig.json /app
+ADD ./vite.config.ts /app
+ADD ./svelte.config.js /app
+ADD ./prodserver.js /app
+ADD ./postcss.config.js /app
+RUN ls -la
+
 RUN npm install --force
 RUN npm run build
 
