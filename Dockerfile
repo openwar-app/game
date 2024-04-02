@@ -13,7 +13,6 @@ ADD ./vite.config.ts /app
 ADD ./svelte.config.js /app
 ADD ./prodserver.js /app
 ADD ./postcss.config.js /app
-RUN ls -la
 
 RUN npm install --force
 RUN npm run build
