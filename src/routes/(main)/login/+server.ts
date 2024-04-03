@@ -1,7 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import {User} from "$lib/server/classes/User";
-import {validatePassword} from "$lib/shared/utils";
 export const POST: RequestHandler = async ({request, locals}) => {
     const ctype = request.headers.get('content-type') ?? 'unknown';
     if(ctype === 'application/json') {
