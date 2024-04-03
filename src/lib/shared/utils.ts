@@ -9,7 +9,7 @@ export function validatePassword(password: string, passwordRepeat: string) : fal
     let complexity = 0;
     if(/[a-z]/.test(password)) complexity++;
     if(/[A-Z]/.test(password)) complexity++;
-    if(/[0-9]/.test(password)) complexity++;
+    if(/\d/.test(password)) complexity++;
     if(/[^a-zA-Z0-9]/.test(password)) complexity++;
     if(complexity < 3) {
         return {status: 'error', error: 'website.register.password-too-simple'};
