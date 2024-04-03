@@ -1,5 +1,4 @@
 import type { PageServerLoad } from './$types';
-import Races from '$lib/shared/races';
 import {User} from "$lib/server/classes/User";
 export const load: PageServerLoad = async ({ locals }) => {
     let user = null;
