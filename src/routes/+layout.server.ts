@@ -1,5 +1,5 @@
 import type { LayoutServerLoad } from './$types';
-
+import {dev} from "$app/environment";
 import { loadTranslations, locales } from '$lib/translations';
 
 
@@ -23,7 +23,7 @@ export const load: LayoutServerLoad = async ({locals, request, url, cookies}) =>
         }
         if(language === 'auto') {
             language = 'en';
-            cookies.set('language', language, { path: '/' });
+            cookies.set('language', language, { path: '/', secure: !dev});
         }
     }
     const { pathname } = url;

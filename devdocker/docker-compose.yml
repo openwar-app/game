@@ -18,11 +18,6 @@ services:
     command: npm run dev --host
     volumes:
       - ../:/home/node/app
-    healthcheck:
-        test: curl --fail http://localhost:5173/ || exit 1
-        interval: 5s
-        timeout: 5s
-        retries: 5
   database_init: #we use this container to fix the permissions of the database volume to make it usable for local user
     image: postgres:16.2-bookworm
     volumes:

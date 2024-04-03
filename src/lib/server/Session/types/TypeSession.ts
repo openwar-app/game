@@ -2,7 +2,7 @@
 export type Session = {
 	data: {
 		[key: string]: unknown,
-		username: string|null
+		userid: string|null
 	};
 	lastUpdated: Date;
 	sessionId: string;

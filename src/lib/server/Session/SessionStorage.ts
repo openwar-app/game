@@ -32,7 +32,7 @@ export function createOrGet(sessionId: string) : Session {
             sessionId: sessionId,
             lastUpdated: new Date(),
             data: {
-                username: null
+                userid: null
             }
         }
         set(session);

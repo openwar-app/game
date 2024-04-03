@@ -4,6 +4,18 @@ import argon2 from "argon2";
 export class User {
     private _user: UserEntity;
 
+    public getId() {
+        return this._user.id;
+    }
+
+    public getEmail() {
+        return this._user.email;
+    }
+
+    public getCharName() {
+        return this._user.charname;
+    }
+
     private constructor(user: UserEntity) {
         this._user = user;
     }
@@ -14,6 +26,38 @@ export class User {
         user.password = await argon2.hash(user.password);
         await user.save();
         return new User(user);
+    }
+
+    static async validatePassword(email: string, password: string) {
+        const user = await User.byEmail(email);
+        if(user) {
+            return argon2.verify(user._user.password, password);
+        }
+        return false;
+    }
+
+
+    static async byId(id: string) {
+        const findUser = await UserEntity.findOne({
+            where: {
+                id
+            }
+        });
+        if(findUser) {
+            return new User(findUser);
+        }
+        return null;
+    }
+    static async byEmail(email: string) {
+        const findUser = await UserEntity.findOne({
+            where: {
+                email
+            }
+        });
+        if(findUser) {
+            return new User(findUser);
+        }
+        return null;
     }
 
     static async validateEmail(email: string, failIfExists:boolean=false) : Promise<true|string> {
