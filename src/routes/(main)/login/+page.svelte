@@ -1,12 +1,12 @@
 <script lang="ts">
-import {t} from "$lib/translations.js";
+    import {t} from "$lib/translations.js";
+    import {goto} from '$app/navigation';
 
-
-let { data } = $props();
-console.log(data);
+    let { data } = $props();
 
 let email:string = $state('');
 let password:string = $state('');
+let error: string = $state('');
 
 let loginButtonDisabled:boolean = $state(true);
 
@@ -24,7 +24,11 @@ async function login() {
     });
     if(result.status === 200) {
         let data = await result.json();
-        console.log(data);
+        if (data.status === 'ok') {
+            goto('/game');
+        } else {
+            error = data.error;
+        }
     }
 }
 
@@ -41,6 +45,11 @@ async function login() {
 
 <div class="">
     <h3 class="text-xl mb-4">{$t('website.title.login')}</h3>
+
+    {#if error !== ''}
+        <p class="text-red-500">{$t(error)}</p>
+    {/if}
+
     <div class="w-72 grid grid-cols-[max-content_auto] grid-gap-4">
 
         <label for="input-email">{$t('website.register.email')}</label>

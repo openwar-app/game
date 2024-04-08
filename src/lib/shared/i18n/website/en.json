@@ -32,6 +32,9 @@
     "charname_invalid": "Character name contains invalid characters",
     "charname_already_exists": "Character name already taken",
     "buttonText": "Register now!"
+  },
+  "login": {
+    "invalid_credentials": "Invalid email or password"
   }
 
 
