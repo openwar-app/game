@@ -42,5 +42,13 @@
 		"sveltekit-i18n": "^2.4.2",
 		"typeorm": "^0.3.20",
 		"ws": "^8.16.0"
+	},
+	"overrides": {
+		"sveltekit-i18n": {
+			"svelte": "$svelte"
+		},
+		"svelte-hmr": {
+			"svelte": "$svelte"
+		}
 	}
 }
