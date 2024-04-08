@@ -1,4 +1,4 @@
-import {Entity, Column, BaseEntity, PrimaryGeneratedColumn, Unique} from "typeorm"
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique} from "typeorm"
 import type {UserData} from "$lib/shared/User/UserData";
 import {RaceEnum} from "$lib/shared/races/RaceEnum";
 
@@ -27,6 +27,12 @@ export default class User extends BaseEntity implements UserData {
 
     @Column("int", {default: 0})
     xp!: number;
+
+    @Column("int", {default: 100})
+    posx!: number;
+
+    @Column("int", {default: 100})
+    posy!: number;
 
 
 
