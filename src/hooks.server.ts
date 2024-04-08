@@ -26,11 +26,14 @@ export const handle: Handle = async ({ event, resolve }) => {
     set(event.locals.session);
     return response;
 };
-const wss = globalThis.sveltekitWSS;
-wss.removeAllListeners();
+//dev only
+if (globalThis.sveltekitWSS !== undefined) {
+    globalThis.sveltekitWSS.removeAllListeners();
+}
 let wssInitialized = false;
 const startupWebsocketServer = () => {
     if (wssInitialized) return;
+    const wss = globalThis.sveltekitWSS;
     if (wss !== undefined) {
         wss.on('connection', (ws, _request) => {
             const cookie = (_request.headers.cookie ?? '') as string;
