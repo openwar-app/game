@@ -1,6 +1,7 @@
 import UserEntity from "$lib/server/database/Entities/User";
 import emailValidator from "email-validator";
 import argon2 from "argon2";
+
 export class User {
     private _user: UserEntity;
 
@@ -105,4 +106,18 @@ export class User {
     }
 
 
+    getPosition() {
+        return {
+            x: this._user.posx,
+            y: this._user.posy
+        }
+    }
+
+    getRace() {
+        return this._user.race;
+    }
+
+    getXP() {
+        return this._user.xp
+    }
 }

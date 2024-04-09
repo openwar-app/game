@@ -3,7 +3,9 @@ import {TypeORM} from "$lib/server/database/db";
 import type {Handle} from "@sveltejs/kit";
 import {createNewSessionId, createOrGet, set} from "$lib/server/Session/SessionStorage";
 import {dev} from "$app/environment";
-import {fromJSON, Packet} from "$lib/shared/network";
+import {Packet} from "$lib/shared/network";
+import {ClientConnectionFactory} from "$lib/server/classes/ClientConnectionFactory";
+import {WebSocket} from "ws";
 
 const db = await TypeORM.getInstance(); //we init the db connection
 
@@ -35,7 +37,7 @@ const startupWebsocketServer = () => {
     if (wssInitialized) return;
     const wss = globalThis.sveltekitWSS;
     if (wss !== undefined) {
-        wss.on('connection', (ws, _request) => {
+        wss.on('connection', (ws: WebSocket, _request) => {
             const cookie = (_request.headers.cookie ?? '') as string;
             let sessionId = cookie.split(';').find(c => c.trim().startsWith('sessionid='))?.substring(10) ?? '';
             let session = createOrGet(sessionId);
@@ -46,13 +48,11 @@ const startupWebsocketServer = () => {
             }
             // @ts-ignore
             ws.userId = session.data?.userid;
-            ws.on('message', (message) => {
-                let msg = fromJSON(message.toString());
-                console.log(`[wss:kit] received message: ${msg instanceof Packet.GetUser}`);
-                console.log(msg);
+            ClientConnectionFactory.create(ws);
+        });
 
-
-            });
+        wss.on('close', (ws: WebSocket) => {
+            ClientConnectionFactory.remove(ws);
         });
         wssInitialized = true;
     }
