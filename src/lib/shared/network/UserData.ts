@@ -6,11 +6,11 @@ import type {RaceEnum} from "$lib/shared/races/RaceEnum";
 
 export class UserData extends NetPacket implements IUserData {
     static readonly TYPE = 'UserData'
-    id: string;
+    userid: string;
 
     constructor(user: User) {
         super(UserData.TYPE);
-        this.id = user.getId();
+        this.userid = user.getId();
         this.charname = user.getCharName();
         this.posx = user.getPosition().x;
         this.posy = user.getPosition().y;

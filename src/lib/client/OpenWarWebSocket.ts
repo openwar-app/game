@@ -1,7 +1,8 @@
-import type {NetPacket} from "$lib/network/NetPacket";
+import {fromJSON} from "$lib/shared/network";
+import type {NetPacket} from "$lib/shared/network/NetPacket";
 
-export type EventCallback =  (data: any[]) => Promise<void>|void;
-export type EventTypes = 'open' | 'close';
+export type EventCallback = (...data: any[]) => Promise<void> | void;
+export type EventTypes = 'open' | 'close' | string;
 export type EventSet= Set<EventCallback>
 
 export class OpenWarWebSocket {
@@ -20,11 +21,13 @@ export class OpenWarWebSocket {
             this.eventMap.set(type, new Set<EventCallback>());
         }
         this.eventMap.get(type)?.add(callback);
+        return callback;
     }
     off(type: EventTypes, callback: EventCallback) {
         if(this.eventMap.has(type)) {
             this.eventMap.get(type)?.delete(callback);
         }
+        return callback;
     }
 
 
@@ -44,8 +47,7 @@ export class OpenWarWebSocket {
         }
         this.queue = [];
         this.ws = new WebSocket(this.conString);
-        this.ws.addEventListener('open', () => {
-            console.log('WebSocket connected');
+        this.ws.addEventListener('open', (...args) => {
             if(this.queue.length > 0) {
                 this.queue.forEach((data) => {
                     this.send(data);
@@ -54,18 +56,28 @@ export class OpenWarWebSocket {
             }
             if(this.eventMap.has('open')) {
                 this.eventMap.get('open')?.forEach((callback) => {
-                    callback([]);
+                    callback.call(this, ...args)
                 });
             }
         });
-        this.ws.addEventListener('close', () => {
-            console.log('WebSocket closed');
+        this.ws.addEventListener('close', (...args) => {
             if(this.eventMap.has('close')) {
                 this.eventMap.get('close')?.forEach((callback) => {
-                    callback([]);
+                    callback.call(this, ...args);
                 });
             }
         });
+
+        this.ws.addEventListener('message', (event) => {
+            let msg = fromJSON(event.data);
+            let onHandlerName = 'onPacket' + msg.type;
+            if (this.eventMap.has(onHandlerName)) {
+                this.eventMap.get(onHandlerName)?.forEach((callback) => {
+                    callback.call(this, msg)
+                });
+            }
+        });
+
     }
     private send(data: string | ArrayBufferLike | Blob | ArrayBufferView) {
         if(this.ws.readyState === WebSocket.OPEN) {

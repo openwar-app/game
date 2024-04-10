@@ -5,5 +5,8 @@ export const load: LayoutServerLoad = async ({locals}) => {
     if (locals.session.data?.userid === null) {
         redirect(307, '/login');
     }
-    return {};
+
+    return {
+        userId: locals.session.data?.userid
+    };
 };
