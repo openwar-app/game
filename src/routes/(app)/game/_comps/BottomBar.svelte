@@ -2,10 +2,10 @@
     import ResourceGlobe from "./BottomBar/ResourceGlobe.svelte";
 
     let originalHeight = 233;
-    let originalWidth = 2363;
+    let originalWidth = 2359;
 
 
-    const maxScale = 0.7
+    const maxScale = 0.6
 
     let observer, outerWrapper, wrapper;
     let scale = 1.0;
@@ -50,7 +50,7 @@
         bottom: 0;
         left: 50%;
         height: 100%;
-        width: 2363px;
+        width: 2359px;
         margin: 0 auto;
         transform-origin: bottom left;
     }
@@ -59,7 +59,7 @@
     .innerWrapper {
         z-index: 3;
         position: absolute;
-        left: 212px;
+        left: 211px;
         bottom: 10px;
         pointer-events: none;
     }
