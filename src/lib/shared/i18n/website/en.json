@@ -34,7 +34,8 @@
     "buttonText": "Register now!"
   },
   "login": {
-    "invalid_credentials": "Invalid email or password"
+    "invalid_credentials": "Invalid email or password",
+    "buttonText": "Login"
   }
 
 

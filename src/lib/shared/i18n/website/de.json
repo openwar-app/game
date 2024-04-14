@@ -31,5 +31,9 @@
       "charname_invalid": "Chractername enthält ungültige Zeichen",
       "charname_already_exists": "Chractername ist bereits vergeben",
       "buttonText": "Jetzt anmelden!"
+  },
+  "login": {
+    "invalid_credentials": "Email oder Passwort falsch",
+    "buttonText": "Anmelden"
   }
 }

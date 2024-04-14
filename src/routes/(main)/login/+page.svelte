@@ -59,7 +59,8 @@ async function login() {
         <input bind:value={password} type="password" id="input-password">
 
 
-        <button on:click={login} class="btn btn-red" disabled={loginButtonDisabled}>{$t('website.register.buttonText')}</button>
+        <button on:click={login} class="btn btn-red"
+                disabled={loginButtonDisabled}>{$t('website.login.buttonText')}</button>
 
     </div>
 </div>
