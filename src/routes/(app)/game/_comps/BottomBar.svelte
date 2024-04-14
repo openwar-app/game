@@ -16,7 +16,7 @@
                 for (let entry of entries) {
                     const cr = entry.contentRect;
                     scale = Math.min(maxScale, cr.width / originalWidth);
-                    wrapper.style.transform = `scale(${scale})`;
+                    wrapper.style.transform = `scale(${scale}) translateX(-50%)`;
                 }
             });
             observer.observe(outerWrapper);
@@ -34,8 +34,7 @@
         bottom: 0;
         left: 0;
         width: 100%;
-        background-color: #333;
-        height: 361px
+        height: 361px;
     }
 
     .bottomBarDesign {
@@ -47,8 +46,9 @@
     }
 
     .wrapper {
-        position: relative;
+        position: absolute;
         bottom: 0;
+        left: 50%;
         height: 100%;
         width: 2363px;
         margin: 0 auto;
@@ -57,7 +57,6 @@
 
 
     .innerWrapper {
-        transform-origin: bottom left;
         z-index: 3;
         position: absolute;
         left: 212px;
