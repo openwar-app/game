@@ -26,7 +26,7 @@ async function login() {
     if(result.status === 200) {
         let data = await result.json();
         if (data.status === 'ok') {
-            goto('/game');
+            await goto('/game');
         } else {
             error = data.error;
         }
