@@ -13,7 +13,7 @@ const db = await TypeORM.getInstance(); //we init the db connection
 
 
 export const handle: Handle = async ({ event, resolve }) => {
-
+    startupWebsocketServer();
     const cookies = event.cookies;
 
     let sessionId = cookies.get('sessionid') ?? '';
@@ -58,4 +58,3 @@ const startupWebsocketServer = () => {
     }
 };
 
-startupWebsocketServer();
