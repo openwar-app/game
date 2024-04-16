@@ -50,7 +50,7 @@ async function login() {
     {#if error !== ''}
         <p class="text-red-500">{$t(error)}</p>
     {/if}
-    <form method="post" on:submit|preventDefault={() => {login()}}>
+    <form method="post" on:submit|preventDefault={login}>
     <div class="w-72 grid grid-cols-[max-content_auto] grid-gap-4">
 
         <label for="input-email">{$t('website.register.email')}</label>
