@@ -15,6 +15,7 @@ $effect(() => {
 });
 
 async function login() {
+    if (loginButtonDisabled) return;
     let result = await fetch(location.href, {
         method: 'POST',
         headers: {
@@ -49,7 +50,7 @@ async function login() {
     {#if error !== ''}
         <p class="text-red-500">{$t(error)}</p>
     {/if}
-
+    <form method="post" on:submit|preventDefault={() => {login()}}>
     <div class="w-72 grid grid-cols-[max-content_auto] grid-gap-4">
 
         <label for="input-email">{$t('website.register.email')}</label>
@@ -63,4 +64,5 @@ async function login() {
                 disabled={loginButtonDisabled}>{$t('website.login.buttonText')}</button>
 
     </div>
+    </form>
 </div>
