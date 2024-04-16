@@ -48,7 +48,7 @@ const startupWebsocketServer = () => {
             }
             // @ts-ignore
             ws.userId = session.data?.userid;
-            ClientConnectionFactory.create(ws);
+            ClientConnectionFactory.create(ws, wss);
         });
 
         wss.on('close', (ws: WebSocket) => {

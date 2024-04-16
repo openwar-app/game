@@ -3,12 +3,16 @@ import {GetUser} from "./GetUser";
 import type {NetPacket} from "$lib/shared/network/NetPacket";
 import {Logout} from "./Logout";
 import {UserData} from "./UserData";
+import {SendChat} from "./SendChat";
+import {ChatMessage} from "./ChatMessage";
 
 class Packet {
     static readonly Login = Login;
     static readonly GetUser = GetUser;
     static readonly Logout = Logout;
     static readonly UserData = UserData;
+    static readonly SendChat = SendChat;
+    static readonly ChatMessage = ChatMessage;
 
 }
 

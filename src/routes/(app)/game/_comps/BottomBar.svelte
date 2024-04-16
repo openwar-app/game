@@ -101,7 +101,7 @@
     }
 
 </style>
-<div id="bottomBar" bind:this={outerWrapper}>
+<div id="bottomBar" clasS="pointer-events-none" bind:this={outerWrapper}>
 
 
     <div class="wrapper" bind:this={wrapper}>
