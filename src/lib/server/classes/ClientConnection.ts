@@ -11,7 +11,10 @@ export class ClientConnection {
     wss: WebSocketServer;
 
     async onPacketGetUser(packet: GetUser) {
-        this.sendUserData();
+        let user = await this.getUser();
+        if (packet.getUsername() === undefined || user?.getCharName() === packet.getUsername()) {
+            this.sendUserData();
+        }
     }
 
 
