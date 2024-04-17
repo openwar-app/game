@@ -2,11 +2,11 @@ import {User} from "$lib/server/classes/User";
 import UserEntity from "$lib/server/database/Entities/User";
 import {CachedMap} from "$lib/shared/CachedMap";
 
-
+const EXPIRY = 1800 * 1000; //30 Minutes
 export class UserFactory {
-    static MapById: CachedMap<string, User> = new CachedMap();
-    static MapByName: CachedMap<string, User> = new CachedMap();
-    static MapByEmail: CachedMap<string, User> = new CachedMap();
+    static MapById: CachedMap<string, User> = new CachedMap(EXPIRY);
+    static MapByName: CachedMap<string, User> = new CachedMap(EXPIRY);
+    static MapByEmail: CachedMap<string, User> = new CachedMap(EXPIRY);
 
     static addToCache(user: User) {
         this.MapById.put(user.getId(), user);
