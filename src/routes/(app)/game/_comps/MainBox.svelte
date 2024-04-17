@@ -1,8 +1,9 @@
 <script lang="ts">
     import ChatBox from "./ChatBox.svelte";
+    import Components from "$lib/client/ComponentsStore.svelte";
 
     let chatbox = $state(null);
-    $effect(() => console.log(chatbox));
+    $effect(() => Components.chatBox = chatbox);
 </script>
 <style lang="postcss">
     .chatbox {
