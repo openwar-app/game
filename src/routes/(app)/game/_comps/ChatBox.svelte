@@ -4,13 +4,10 @@
     import type {ChatMessage} from "$lib/shared/network/ChatMessage";
 
     const scrollToBottom = async () => {
-        console.log('sh', messageBox.scrollHeight);
         messageBox.scroll({top: messageBox.scrollHeight, behavior: 'smooth'});
     };
 
-    $effect(() => {
-        console.log('msb', messageBox);
-    })
+
     $effect(() => {
         if (messages.length) setTimeout(scrollToBottom, 100);
     })
@@ -49,7 +46,6 @@
     let newChatMessageEvent;
     $effect(() => {
         newChatMessageEvent = websocket.on('onPacketChatMessage', (message: ChatMessage) => {
-            console.log(message);
             messages.push(message);
         });
 

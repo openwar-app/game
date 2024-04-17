@@ -11,6 +11,11 @@ export class ClientConnection {
     wss: WebSocketServer;
 
     async onPacketGetUser(packet: GetUser) {
+        this.sendUserData();
+    }
+
+
+    async sendUserData() {
         let user = await this.getUser();
         this.send(new Packet.UserData(user as User));
     }
@@ -34,10 +39,14 @@ export class ClientConnection {
         this.ws.send(JSON.stringify(packet));
     }
 
+    _userDataSync: any;
+
     constructor(ws: WebSocket, wss: WebSocketServer) {
         this.ws = ws;
         this.wss = wss;
 
+
+        this._userDataSync = setInterval(() => this.sendUserData(), 60 * 1000);
 
         this.ws.on('message', (data) => {
             const packet = fromJSON(data.toString());
@@ -47,6 +56,10 @@ export class ClientConnection {
             }
 
 
+        });
+
+        this.ws.on('close', () => {
+            clearInterval(this._userDataSync)
         });
     }
 }
