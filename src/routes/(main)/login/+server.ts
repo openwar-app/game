@@ -1,13 +1,14 @@
 import {json} from '@sveltejs/kit';
 import type {RequestHandler} from './$types';
 import {User} from "$lib/server/classes/User";
+import {UserFactory} from "$lib/server/classes/UserFactory";
 
 export const POST: RequestHandler = async ({request, locals}) => {
     const ctype = request.headers.get('content-type') ?? 'unknown';
     if(ctype === 'application/json') {
         const body = await request.json();
         if(body?.action === 'login') {
-            const user = await User.byEmail(body.email);
+            const user = await UserFactory.byEmail(body.email);
             if(user) {
                 const validPassword = await User.validatePassword(body.email, body.password);
                 if(validPassword) {

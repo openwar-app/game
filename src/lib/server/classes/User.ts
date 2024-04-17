@@ -1,6 +1,7 @@
 import UserEntity from "$lib/server/database/Entities/User";
 import emailValidator from "email-validator";
 import argon2 from "argon2";
+import {UserFactory} from "$lib/server/classes/UserFactory";
 
 export class User {
     private _user: UserEntity;
@@ -30,7 +31,7 @@ export class User {
     }
 
     static async validatePassword(email: string, password: string) {
-        const user = await User.byEmail(email);
+        const user = await UserFactory.byEmail(email);
         if(user) {
             return argon2.verify(user._user.password, password);
         }
@@ -38,17 +39,6 @@ export class User {
     }
 
 
-    static async byId(id: string) {
-        const findUser = await UserEntity.findOne({
-            where: {
-                id
-            }
-        });
-        if(findUser) {
-            return new User(findUser);
-        }
-        return null;
-    }
     static async byEmail(email: string) {
         const findUser = await UserEntity.findOne({
             where: {
