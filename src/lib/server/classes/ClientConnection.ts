@@ -5,6 +5,7 @@ import {User} from "$lib/server/classes/User";
 import type {NetPacket} from "$lib/shared/network/NetPacket";
 import type {SendChat} from "$lib/shared/network/SendChat";
 import {ChatMessage} from "$lib/shared/network/ChatMessage";
+import {UserFactory} from "$lib/server/classes/UserFactory";
 
 export class ClientConnection {
     ws: WebSocket;
@@ -34,7 +35,7 @@ export class ClientConnection {
 
     async getUser(): Promise<User | null> {
         // @ts-ignore
-        return User.byId(this.ws.userId);
+        return UserFactory.byId(this.ws.userId);
     }
 
 
