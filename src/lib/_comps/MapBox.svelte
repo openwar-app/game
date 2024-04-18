@@ -75,7 +75,11 @@
                 div.style.setProperty('--posy', v.Y);
 
                 mount(MapField, {
-                    target: div
+                    target: div,
+                    props: {
+                        posx: v.X,
+                        posy: v.Y
+                    }
                 });
                 outerWrapper.appendChild(div);
 
