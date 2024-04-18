@@ -1,8 +1,8 @@
 <script lang="ts">
     import ClientData from "$lib/client/ClientData.svelte";
-    import InfoBox from "./_comps/InfoBox.svelte";
-    import MainBox from "./_comps/MainBox.svelte";
-    import BottomBar from "./_comps/BottomBar.svelte";
+    import InfoBox from "$lib//_comps/InfoBox.svelte";
+    import MainBox from "$lib//_comps/MainBox.svelte";
+    import BottomBar from "$lib//_comps/BottomBar.svelte";
 
     let userData = $derived(ClientData.userData);
     let resizing = $state(false);
