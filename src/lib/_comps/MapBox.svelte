@@ -52,7 +52,7 @@
     });
 
 
-    const _mapCache = new CachedMap<string, any>(15000, (k, v) => {
+    const _mapCache = new CachedMap<string, any>(15000, (k) => {
         outerWrapper.querySelector(`[data-field="${k}"]`)?.remove();
         delete map[k];
     });
