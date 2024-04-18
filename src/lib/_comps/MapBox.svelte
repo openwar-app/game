@@ -94,6 +94,7 @@
 
 
     $effect(() => {
+        // noinspection CommaExpressionJS
         dimensions.w, dimensions.h, POS_X, POS_Y;
         setTimeout(() => {
             outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
@@ -116,6 +117,7 @@
         background: blue;
     }
 
+    /*noinspection CssUnusedSymbol*/
     .outerwrapper > :global(.field) {
         width: var(--fieldsize);
         height: var(--fieldsize);
