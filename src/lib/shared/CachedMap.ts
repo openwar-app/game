@@ -4,10 +4,19 @@ type CachedValue<T> = {
 }
 
 export class CachedMap<K, T> {
-    _map: Map<K, CachedValue<T>> = new Map();
-    _expiry: number = -1;
-    _cleanUpFunction: Function | null = null;
-    _cleanLock = false;
+    private _map: Map<K, CachedValue<T>> = new Map();
+    private _expiry: number = -1;
+    private _cleanUpFunction: Function | null = null;
+    private _cleanLock = false;
+
+
+    get cleanlock() {
+        return this._cleanLock;
+    }
+
+    set cleanlock(value: boolean) {
+        this._cleanLock = value;
+    }
 
     put(key: K, value: T) {
         this._map.set(key, {_time: Date.now(), value});
@@ -32,7 +41,7 @@ export class CachedMap<K, T> {
         this._cleanUpFunction = cleanUpFunction;
     }
 
-    private async clean() {
+    async clean() {
         if (this._expiry <= 0 || this._cleanLock) return;
         this._cleanLock = true;
         for (let [key, cv] of this._map.entries()) {

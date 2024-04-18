@@ -58,11 +58,14 @@
     });
     let map: { [key: string]: any } = $state({});
     $effect(() => {
+        _mapCache.cleanLock = true;
         Y_RANGE.forEach((Y) => {
             X_RANGE.forEach((X) => {
                 _mapCache.put(`${Y}:${X}`, {X, Y});
             })
         })
+        _mapCache.cleanLock = false;
+        _mapCache.clean();
         _mapCache.entries().forEach(async ([k, v]) => {
             if (typeof map[k] === 'undefined') {
                 map[k] = v;
