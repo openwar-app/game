@@ -4,7 +4,7 @@
     import {Range} from "$lib/shared/Range";
     import {CachedMap} from "$lib/shared/CachedMap";
     import MapField from "$lib/_comps/MapField.svelte";
-    import {mount} from 'svelte';
+    import {mount, unmount} from 'svelte';
 
     let outerWrapper: HTMLElement;
     let dimensions: { w: number, h: number } = $state({w: 0, h: 0});
@@ -51,9 +51,14 @@
         }
     });
 
+    const wm = new WeakMap<Element, any>;
 
-    const _mapCache = new CachedMap<string, any>(15000, (k) => {
-        outerWrapper.querySelector(`[data-field="${k}"]`)?.remove();
+    const _mapCache = new CachedMap<string, any>(1000, (k) => {
+        let elem = outerWrapper.querySelector(`[data-field="${k}"]`);
+        if (elem) {
+            unmount(elem.mapfield);
+            elem.remove();
+        }
         delete map[k];
     });
     let map: { [key: string]: any } = $state({});
@@ -61,7 +66,7 @@
         _mapCache.cleanLock = true;
         Y_RANGE.forEach((Y) => {
             X_RANGE.forEach((X) => {
-                _mapCache.put(`${Y}:${X}`, {X, Y});
+                _mapCache.put(`${X}:${Y}`, {X, Y});
             })
         })
         _mapCache.cleanLock = false;
@@ -77,7 +82,7 @@
                 div.style.setProperty('--posx', v.X);
                 div.style.setProperty('--posy', v.Y);
 
-                mount(MapField, {
+                div.mapfield = mount(MapField, {
                     target: div,
                     props: {
                         posx: v.X,

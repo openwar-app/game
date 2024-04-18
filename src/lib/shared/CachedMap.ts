@@ -51,6 +51,7 @@ export class CachedMap<K, T> {
                     try {
                         await this._cleanUpFunction(key, cv.value);
                     } catch (ex) {
+                        console.error('failed to delete', key, ex);
                     }
                 }
                 this._map.delete(key);

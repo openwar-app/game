@@ -64,7 +64,6 @@
     if(e.key === 'Enter') {
         _showChat ? hideChat() : showChat();
     }
-    console.log(e);
 }}/>
 
 <style lang="postcss">
