@@ -114,11 +114,11 @@
         background: blue;
     }
 
-    :global(.field) {
+    .outerwrapper > :global(.field) {
         width: var(--fieldsize);
         height: var(--fieldsize);
 
-        border: 1px solid red;
+        border: 1px solid black;
         box-sizing: border-box;
 
         position: absolute;
