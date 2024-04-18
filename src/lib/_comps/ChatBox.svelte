@@ -87,7 +87,7 @@
 
     .activeChat {
         .content {
-            @apply bg-gray-700/30;
+            @apply bg-gray-700/50;
         }
 
         .content > div {
@@ -101,7 +101,7 @@
     }
 </style>
 <div class="flex w-full h-full flex-col" class:activeChat={_showChat}>
-    <div class="content w-full flex-1 overflow-hidden bg-gray-700/5 ">
+    <div class="content w-full flex-1 overflow-hidden bg-gray-700/40 text-white shadow-2xl backdrop-blur-sm">
         <div class="h-full w-full p-2" bind:this={messageBox} id="divId">
             {#each messages as message (message.guid)}
                 <div>

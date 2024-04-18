@@ -123,7 +123,7 @@
 
         position: absolute;
         left: calc(var(--posx) * var(--fieldsize));
-        top: calc(var(--posy) * var(--fieldsize));
+        top: calc(10000px - (var(--posy) * var(--fieldsize)));
     }
 
     .positiondisplay {
@@ -142,6 +142,6 @@
 <div class="outerwrapper" bind:this={outerWrapper} style="--fieldsize:{FIELD_SIZE}px">
 
 </div>
-<div class="positiondisplay">
+<div class="positiondisplay shadow-2xl backdrop-blur-sm">
     {POS_X} : {POS_Y}
 </div>
