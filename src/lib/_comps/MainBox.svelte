@@ -21,7 +21,6 @@
     .mapbox {
         width: 100%;
         height: 100%;
-        background: red;
         position: absolute;
         left: 0;
         right: 0;
@@ -33,5 +32,5 @@
     <ChatBox bind:this={chatbox}></ChatBox>
 </div>
 <div class="mapbox">
-    <MapBox bind:this={mapbox}></MapBox>
+    <MapBox bind:this={mapbox} FIELD_SIZE={75}></MapBox>
 </div>

@@ -7,11 +7,11 @@
 
     const maxScale = 0.6
 
-    let observer, outerWrapper, wrapper;
+    let observer = null, outerWrapper, wrapper;
     let scale = 1.0;
 
     $effect(() => {
-        if (outerWrapper) {
+        if (outerWrapper && observer === null) {
             observer = new ResizeObserver((entries) => {
                 for (let entry of entries) {
                     const cr = entry.contentRect;

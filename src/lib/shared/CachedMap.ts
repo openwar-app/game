@@ -23,6 +23,10 @@ export class CachedMap<K, T> {
         return v.value;
     }
 
+    entries(): [K, T][] {
+        return [...this._map.entries()].map(([k, v]) => [k, v.value]);
+    }
+
     constructor(expiry: number = -1, cleanUpFunction: null | Function = null) {
         this._expiry = expiry;
         this._cleanUpFunction = cleanUpFunction;
@@ -36,13 +40,13 @@ export class CachedMap<K, T> {
             if (elapsed > this._expiry) {
                 if (this._cleanUpFunction) {
                     try {
-                        await this._cleanUpFunction(cv.value);
+                        await this._cleanUpFunction(key, cv.value);
                     } catch (ex) {
                     }
                 }
                 this._map.delete(key);
             }
         }
-        this._cleanLock = false;
+        setTimeout(() => this._cleanLock = false, 100);
     }
 }
