@@ -91,8 +91,7 @@
 
 
     $effect(() => {
-        dimensions.w, dimensions.h;
-        console.log('should scroll to', POS_X, POS_Y);
+        dimensions.w, dimensions.h, POS_X, POS_Y;
         setTimeout(() => {
             outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
                 behavior: 'auto',
