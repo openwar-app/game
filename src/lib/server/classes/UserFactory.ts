@@ -54,8 +54,9 @@ export class UserFactory {
 
 
     private static createUserInstance(data: UserEntity): User {
-        let newObj = Object.create(User.prototype);
+        let newObj: User = Object.create(User.prototype);
         newObj = Object.assign(newObj, {_user: data});
+        newObj.connections = new Set();
         return newObj;
     }
 

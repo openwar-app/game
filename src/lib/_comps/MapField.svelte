@@ -19,17 +19,56 @@
         border: 1px solid #FFFF00;
     }
 
+    .clickoverlay {
+        display: none;
+    }
+
+    .neighbourField {
+        .clickoverlay {
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            background: red;
+            pointer-events: all;
+            cursor: pointer;
+        }
+    }
+
+
 
 </style>
 <script lang="ts">
     import ClientData from "$lib/client/ClientData.svelte";
     import type {UserData} from "$lib/shared/User/UserData";
+    import {websocket} from "$lib/client/websocket";
+    import {PlayerMoveTo} from "$lib/shared/network/PlayerMoveTo";
 
     let _UserData = $derived(ClientData.userData) as UserData;
     let POS_X = $derived(_UserData?.posx ?? 0);
     let POS_Y = $derived(_UserData?.posy ?? 0);
     let {posx, posy} = $props();
+
+    let IsCurrentField = $derived(posx === POS_X && posy === POS_Y);
+    let IsNeighbourField = $derived(
+        Math.abs(POS_X - posx) <= 1 && Math.abs(POS_Y - posy) <= 1 && !IsCurrentField
+    )
+
+    function moveTo() {
+        let direction = {
+            x: posx - POS_X,
+            y: posy - POS_Y
+        }
+        websocket.sendPacket(new PlayerMoveTo(direction));
+
+    }
+
+
 </script>
-<div class="field" class:currentField={posx===POS_X && posy === POS_Y}>
-    {posx} / {posy}
+<div class="field" class:currentField={IsCurrentField} class:neighbourField={IsNeighbourField}>
+    <div class="clickoverlay" on:click={moveTo}>
+
+    </div>
 </div>

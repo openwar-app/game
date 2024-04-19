@@ -101,13 +101,13 @@
     $effect(() => {
         // noinspection CommaExpressionJS
         dimensions.w, dimensions.h, POS_X, POS_Y;
-        setTimeout(() => {
+
             outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
-                behavior: 'auto',
+                behavior: 'instant',
                 block: 'center',
                 inline: 'center'
             });
-        }, 100);
+
     })
 
 </script>

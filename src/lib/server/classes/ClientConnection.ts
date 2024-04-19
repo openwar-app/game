@@ -6,6 +6,7 @@ import type {NetPacket} from "$lib/shared/network/NetPacket";
 import type {SendChat} from "$lib/shared/network/SendChat";
 import {ChatMessage} from "$lib/shared/network/ChatMessage";
 import {UserFactory} from "$lib/server/classes/UserFactory";
+import type {PlayerMoveTo} from "$lib/shared/network/PlayerMoveTo";
 
 export class ClientConnection {
     ws: WebSocket;
@@ -18,6 +19,23 @@ export class ClientConnection {
         }
     }
 
+    async onPacketPlayerMoveTo(packet: PlayerMoveTo) {
+        let x: number = 0, y: number = 0;
+        if (packet.direction.x < 0) x = -1;
+        if (packet.direction.y < 0) x = -1;
+        if (packet.direction.x > 0) x = 1;
+        if (packet.direction.y > 0) x = 1;
+        if (x != 0 || y != 0) {
+            let user = await this.getUser() as User;
+            const newPos = {
+                x: user.getPosition().x + x,
+                y: user.getPosition().y + y
+            };
+
+
+            user.setPosition(newPos);
+        }
+    }
 
     async sendUserData() {
         let user = await this.getUser();
@@ -52,9 +70,12 @@ export class ClientConnection {
 
         this._userDataSync = setInterval(() => this.sendUserData(), 60 * 1000);
 
+
+        this.getUser().then(user => (user as User).connections.add(this));
+
         this.ws.on('message', (data) => {
             const packet = fromJSON(data.toString());
-            let funcName = 'onPacket' + packet.type;
+            let funcName = 'onPacket' + packet.PacketType;
             if (funcName in this) {
                 (this as unknown as { [key: string]: Function })[funcName].call(this, packet);
             }
@@ -64,6 +85,7 @@ export class ClientConnection {
 
         this.ws.on('close', () => {
             clearInterval(this._userDataSync)
+            this.getUser().then(user => (user as User).connections.delete(this));
         });
     }
 }

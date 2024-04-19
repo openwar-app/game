@@ -2,8 +2,13 @@ import UserEntity from "$lib/server/database/Entities/User";
 import emailValidator from "email-validator";
 import argon2 from "argon2";
 import {UserFactory} from "$lib/server/classes/UserFactory";
+import type {ClientConnection} from "$lib/server/classes/ClientConnection";
+import type {NetPacket} from "$lib/shared/network/NetPacket";
 
 export class User {
+
+    connections: Set<ClientConnection> = new Set();
+
     private _user: UserEntity;
 
     public getId() {
@@ -103,11 +108,24 @@ export class User {
         }
     }
 
+    setPosition(position: { x: number, y: number }) {
+        this._user.posx = position.x;
+        this._user.posy = position.y;
+        this._user.save();
+        this.connections.forEach(con => con.sendUserData());
+    }
+
     getRace() {
         return this._user.race;
     }
 
     getXP() {
         return this._user.xp
+    }
+
+    async sendPacket(packet: NetPacket) {
+        this.connections.forEach(connection => {
+            connection.send(packet)
+        });
     }
 }

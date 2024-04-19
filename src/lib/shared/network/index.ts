@@ -5,6 +5,7 @@ import {Logout} from "./Logout";
 import {UserData} from "./UserData";
 import {SendChat} from "./SendChat";
 import {ChatMessage} from "./ChatMessage";
+import {PlayerMoveTo} from "./PlayerMoveTo";
 
 class Packet {
     static readonly Login = Login;
@@ -13,12 +14,13 @@ class Packet {
     static readonly UserData = UserData;
     static readonly SendChat = SendChat;
     static readonly ChatMessage = ChatMessage;
+    static readonly PlayerMoveTo = PlayerMoveTo;
 
 }
 
 function fromJSON(json: string): NetPacket {
     const obj = JSON.parse(json);
-    const type = obj.type;
+    const type = obj.___type;
     const packet: typeof NetPacket = Packet[type as keyof typeof Packet] as typeof NetPacket
     if (packet === undefined) {
         throw Error('Unknown packet type');

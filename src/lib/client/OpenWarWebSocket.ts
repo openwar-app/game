@@ -70,7 +70,7 @@ export class OpenWarWebSocket {
 
         this.ws.addEventListener('message', (event) => {
             let msg = fromJSON(event.data);
-            let onHandlerName = 'onPacket' + msg.type;
+            let onHandlerName = 'onPacket' + msg.PacketType;
             if (this.eventMap.has(onHandlerName)) {
                 this.eventMap.get(onHandlerName)?.forEach((callback) => {
                     callback.call(this, msg)
