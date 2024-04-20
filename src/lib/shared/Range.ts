@@ -22,10 +22,14 @@ export function Range(start: number, end: number, interval: number = 1): number[
         throw new Error('interval must not be zero');
     }
     let x: number[] = [];
-    for (let i = start; true; i += interval) {
+
+    let i = start;
+
+    while (true) {
         x.push(i);
         if (interval > 0 && i >= end) break;
         if (interval < 0 && i < end) break;
+        i += interval;
     }
     return x;
 }
