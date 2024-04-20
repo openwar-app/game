@@ -32,5 +32,5 @@
     <ChatBox bind:this={chatbox}></ChatBox>
 </div>
 <div class="mapbox">
-    <MapBox bind:this={mapbox} FIELD_SIZE={75}></MapBox>
+    <MapBox bind:this={mapbox}></MapBox>
 </div>

@@ -56,7 +56,6 @@
     import {type Pair} from "polygon-clipping";
     import {isPointInMultiPolygon} from "$lib/shared/utils";
 
-
     let _UserData = $derived(ClientData.userData) as UserData;
     let POS_X = $derived(_UserData?.posx ?? 0);
     let POS_Y = $derived(_UserData?.posy ?? 0);
@@ -79,11 +78,27 @@
     let point2: Pair = [posx + 0.5, posy + 0.5];
 
     let MapView = $derived(ClientData.MapView.polygon);
-    let IsHidden = $derived(
-        MapView.length === 0 ||
-        !isPointInMultiPolygon(point, MapView) &&
-        !isPointInMultiPolygon(point2, MapView)
-    )
+    let IsHidden = $derived.by(() => {
+        cachedHidden = calcIsHidden();
+        return cachedHidden;
+    })
+
+    let cachedHidden = true;
+
+    function calcIsHidden() {
+        if (!cachedHidden) {
+            return false;
+        }
+        return !(MapView.length > 0 &&
+            (isPointInMultiPolygon(point, structuredClone(MapView)) ||
+                isPointInMultiPolygon(point2, structuredClone(MapView))));
+
+    }
+
+
+
+
+
 
 
 </script>

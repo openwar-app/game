@@ -33,7 +33,7 @@
     let POS_Y = $derived(_UserData?.posy ?? 0);
 
 
-    let {FIELD_SIZE}: { FIELD_SIZE: number } = $props();
+    const FIELD_SIZE = 75;
 
 
     let observer = null;
@@ -150,7 +150,7 @@
 
         position: absolute;
         left: calc(100000px + var(--posx) * var(--fieldsize));
-        top: calc(10000px - (var(--posy) * var(--fieldsize)));
+        top: calc(100000px - (var(--posy) * var(--fieldsize)));
     }
 
     .positiondisplay {
