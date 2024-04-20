@@ -43,9 +43,8 @@
     }
 
 
-    let newChatMessageEvent;
     $effect(() => {
-        newChatMessageEvent = websocket.on('onPacketChatMessage', (message: ChatMessage) => {
+        let newChatMessageEvent = websocket.on('onPacketChatMessage', (message: ChatMessage) => {
             messages.push(message);
         });
 

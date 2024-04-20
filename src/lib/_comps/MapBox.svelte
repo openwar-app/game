@@ -6,6 +6,24 @@
     import MapField from "$lib/_comps/MapField.svelte";
     import {mount, unmount} from 'svelte';
 
+
+    import {websocket} from "$lib/client/websocket";
+    import {MapView} from "$lib/shared/network/MapView";
+
+    $effect(() => {
+        let MapViewListener = websocket.on('onPacketMapView', (mv: MapView) => {
+            ClientData.MapView = mv;
+        });
+
+        websocket.sendPacket(new MapView());
+
+        return () => {
+            websocket.off('onPacketMapView', MapViewListener);
+        }
+
+    })
+
+
     let outerWrapper: HTMLElement;
     let dimensions: { w: number, h: number } = $state({w: 0, h: 0});
 
@@ -131,7 +149,7 @@
         box-sizing: border-box;
 
         position: absolute;
-        left: calc(var(--posx) * var(--fieldsize));
+        left: calc(100000px + var(--posx) * var(--fieldsize));
         top: calc(10000px - (var(--posy) * var(--fieldsize)));
     }
 

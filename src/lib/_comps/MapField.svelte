@@ -21,22 +21,30 @@
 
     .clickoverlay {
         display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
     }
 
     .neighbourField {
         .clickoverlay {
             display: block;
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            right: 0;
+
             background: red;
             pointer-events: all;
             cursor: pointer;
         }
     }
 
+    .isHidden {
+        .clickoverlay {
+            display: block;
+            cursor: not-allowed;
+            background: black;
+        }
+    }
 
 
 </style>
@@ -45,6 +53,9 @@
     import type {UserData} from "$lib/shared/User/UserData";
     import {websocket} from "$lib/client/websocket";
     import {PlayerMoveTo} from "$lib/shared/network/PlayerMoveTo";
+    import {type Pair} from "polygon-clipping";
+    import {isPointInMultiPolygon} from "$lib/shared/utils";
+
 
     let _UserData = $derived(ClientData.userData) as UserData;
     let POS_X = $derived(_UserData?.posx ?? 0);
@@ -62,12 +73,22 @@
             y: posy - POS_Y
         }
         websocket.sendPacket(new PlayerMoveTo(direction));
-
     }
+
+    let point: Pair = [posx - 0.5, posy - 0.5];
+    let point2: Pair = [posx + 0.5, posy + 0.5];
+
+    let MapView = $derived(ClientData.MapView.polygon);
+    let IsHidden = $derived(
+        MapView.length === 0 ||
+        !isPointInMultiPolygon(point, MapView) &&
+        !isPointInMultiPolygon(point2, MapView)
+    )
 
 
 </script>
-<div class="field" class:currentField={IsCurrentField} class:neighbourField={IsNeighbourField}>
+<div class="field" class:currentField={IsCurrentField} class:neighbourField={IsNeighbourField}
+     class:isHidden={IsHidden}>
     <div class="clickoverlay" on:click={moveTo}>
 
     </div>

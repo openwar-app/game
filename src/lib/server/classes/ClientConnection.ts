@@ -7,10 +7,17 @@ import type {SendChat} from "$lib/shared/network/SendChat";
 import {ChatMessage} from "$lib/shared/network/ChatMessage";
 import {UserFactory} from "$lib/server/classes/UserFactory";
 import type {PlayerMoveTo} from "$lib/shared/network/PlayerMoveTo";
+import {MapView} from "$lib/shared/network/MapView";
 
 export class ClientConnection {
     ws: WebSocket;
     wss: WebSocketServer;
+
+
+    async onPacketMapView() {
+        let user = await this.getUser();
+        this.send(new MapView(user.getMapView()))
+    }
 
     async onPacketGetUser(packet: GetUser) {
         let user = await this.getUser();
@@ -22,9 +29,9 @@ export class ClientConnection {
     async onPacketPlayerMoveTo(packet: PlayerMoveTo) {
         let x: number = 0, y: number = 0;
         if (packet.direction.x < 0) x = -1;
-        if (packet.direction.y < 0) x = -1;
+        if (packet.direction.y < 0) y = -1;
         if (packet.direction.x > 0) x = 1;
-        if (packet.direction.y > 0) x = 1;
+        if (packet.direction.y > 0) y = 1;
         if (x != 0 || y != 0) {
             let user = await this.getUser() as User;
             const newPos = {
@@ -51,9 +58,9 @@ export class ClientConnection {
     }
 
 
-    async getUser(): Promise<User | null> {
+    async getUser(): Promise<User> {
         // @ts-ignore
-        return UserFactory.byId(this.ws.userId);
+        return await UserFactory.byId(this.ws.userId) as User;
     }
 
 

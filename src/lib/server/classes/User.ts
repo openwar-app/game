@@ -4,6 +4,8 @@ import argon2 from "argon2";
 import {UserFactory} from "$lib/server/classes/UserFactory";
 import type {ClientConnection} from "$lib/server/classes/ClientConnection";
 import type {NetPacket} from "$lib/shared/network/NetPacket";
+import polygonClipping, {type MultiPolygon, type Polygon} from 'polygon-clipping';
+import {MapView} from "$lib/shared/network/MapView";
 
 export class User {
 
@@ -111,8 +113,32 @@ export class User {
     setPosition(position: { x: number, y: number }) {
         this._user.posx = position.x;
         this._user.posy = position.y;
+
+        //polygon for mapView +2, -2
+        const mapViewPoly: Polygon = [[
+            [position.x - 2, position.y + 2],
+            [position.x + 2, position.y + 2],
+            [position.x + 2, position.y - 2],
+            [position.x - 2, position.y - 2],
+        ]];
+
+        const currentPoly = this._user.mapView;
+        const newPoly = polygonClipping.union(mapViewPoly, ...currentPoly);
+        if (polygonClipping.difference(newPoly, currentPoly).length > 0) {
+            this.sendPacket(new MapView(newPoly))
+        }
+
+
+        this._user.mapView = newPoly;
+        console.log(JSON.stringify(newPoly));
+
+
         this._user.save();
         this.connections.forEach(con => con.sendUserData());
+    }
+
+    getMapView() {
+        return this._user.mapView as MultiPolygon;
     }
 
     getRace() {

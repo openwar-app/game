@@ -6,6 +6,7 @@ import {UserData} from "./UserData";
 import {SendChat} from "./SendChat";
 import {ChatMessage} from "./ChatMessage";
 import {PlayerMoveTo} from "./PlayerMoveTo";
+import {MapView} from "./MapView";
 
 class Packet {
     static readonly Login = Login;
@@ -15,6 +16,7 @@ class Packet {
     static readonly SendChat = SendChat;
     static readonly ChatMessage = ChatMessage;
     static readonly PlayerMoveTo = PlayerMoveTo;
+    static readonly MapView = MapView;
 
 }
 
