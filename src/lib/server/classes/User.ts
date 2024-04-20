@@ -113,13 +113,12 @@ export class User {
     updateMapView() {
         let position = this.getPosition();
         const mapViewPoly: Polygon = [[
-            [position.x - 2, position.y + 2],
-            [position.x + 2, position.y + 2],
-            [position.x + 2, position.y - 2],
-            [position.x - 2, position.y - 2],
+            [position.x - 2.5, position.y + 2.5],
+            [position.x + 2.5, position.y + 2.5],
+            [position.x + 2.5, position.y - 2.5],
+            [position.x - 2.5, position.y - 2.5],
         ]];
         this._user.mapView = polygonClipping.union(mapViewPoly, ...this._user.mapView);
-        this._user.save();
     }
 
     setPosition(position: { x: number, y: number }) {
@@ -128,10 +127,10 @@ export class User {
 
         //polygon for mapView +2, -2
         const mapViewPoly: Polygon = [[
-            [position.x - 2, position.y + 2],
-            [position.x + 2, position.y + 2],
-            [position.x + 2, position.y - 2],
-            [position.x - 2, position.y - 2],
+            [position.x - 2.5, position.y + 2.5],
+            [position.x + 2.5, position.y + 2.5],
+            [position.x + 2.5, position.y - 2.5],
+            [position.x - 2.5, position.y - 2.5],
         ]];
 
         const currentPoly = this._user.mapView;

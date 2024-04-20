@@ -74,8 +74,8 @@
         websocket.sendPacket(new PlayerMoveTo(direction));
     }
 
-    let point: Pair = [posx - 0.5, posy - 0.5];
-    let point2: Pair = [posx + 0.5, posy + 0.5];
+    let point: Pair = [posx, posy];
+
 
     let MapView = $derived(ClientData.MapView.polygon);
     let IsHidden = $derived.by(() => {
@@ -90,8 +90,7 @@
             return false;
         }
         return !(MapView.length > 0 &&
-            (isPointInMultiPolygon(point, structuredClone(MapView)) ||
-                isPointInMultiPolygon(point2, structuredClone(MapView))));
+            (isPointInMultiPolygon(point, structuredClone(MapView))));
 
     }
 
