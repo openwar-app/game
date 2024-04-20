@@ -24,11 +24,10 @@ export function validatePassword(password: string, passwordRepeat: string) : fal
     return true;
 }
 
-export function isPointInPolygon(point: Pair, polygon: Ring) {
+export function isPointInPolygon(point: Pair, polygon: Ring, inside: boolean = false) {
     const [x, y] = point;
 
 
-    let inside = false
     for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
         const xi = polygon[i][0],
             yi = polygon[i][1]
@@ -43,12 +42,11 @@ export function isPointInPolygon(point: Pair, polygon: Ring) {
 }
 
 export function isPointInMultiPolygon(point: Pair, mpolygon: MultiPolygon) {
-    for (let polygon of mpolygon) {
-        if (isPointInPolygon(point, polygon[0])) {
-            return true;
-        }
+    let inside = false;
+    for (let polygon of mpolygon[0]) {
+        inside = isPointInPolygon(point, polygon, inside);
     }
 
 
-    return false;
+    return inside;
 }

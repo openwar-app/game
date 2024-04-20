@@ -90,7 +90,7 @@
             return false;
         }
         return !(MapView.length > 0 &&
-            (isPointInMultiPolygon(point, structuredClone(MapView))));
+            (isPointInMultiPolygon(point, MapView)));
 
     }
 
