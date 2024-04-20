@@ -4,9 +4,9 @@ import {CachedMap} from "$lib/shared/CachedMap";
 
 const EXPIRY = 1800 * 1000; //30 Minutes
 export class UserFactory {
-    static MapById: CachedMap<string, User> = new CachedMap(EXPIRY);
-    static MapByName: CachedMap<string, User> = new CachedMap(EXPIRY);
-    static MapByEmail: CachedMap<string, User> = new CachedMap(EXPIRY);
+    static readonly MapById: CachedMap<string, User> = new CachedMap(EXPIRY);
+    static readonly MapByName: CachedMap<string, User> = new CachedMap(EXPIRY);
+    static readonly MapByEmail: CachedMap<string, User> = new CachedMap(EXPIRY);
 
     static addToCache(user: User) {
         this.MapById.put(user.getId(), user);
