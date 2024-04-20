@@ -110,6 +110,18 @@ export class User {
         }
     }
 
+    updateMapView() {
+        let position = this.getPosition();
+        const mapViewPoly: Polygon = [[
+            [position.x - 2, position.y + 2],
+            [position.x + 2, position.y + 2],
+            [position.x + 2, position.y - 2],
+            [position.x - 2, position.y - 2],
+        ]];
+        this._user.mapView = polygonClipping.union(mapViewPoly, ...this._user.mapView);
+        this._user.save();
+    }
+
     setPosition(position: { x: number, y: number }) {
         this._user.posx = position.x;
         this._user.posy = position.y;

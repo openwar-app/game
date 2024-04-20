@@ -57,6 +57,12 @@ export class UserFactory {
         let newObj: User = Object.create(User.prototype);
         newObj = Object.assign(newObj, {_user: data});
         newObj.connections = new Set();
+
+        if (newObj.getMapView().length === 0) {
+            newObj.updateMapView();
+        }
+
+
         return newObj;
     }
 
