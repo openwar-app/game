@@ -4,7 +4,7 @@
     import MainBox from "$lib//_comps/MainBox.svelte";
     import BottomBar from "$lib//_comps/BottomBar.svelte";
 
-    let userData = $derived(ClientData.userData);
+    //let userData = $derived(ClientData.userData);
     let resizing = $state(false);
 
     let widthLeftCol = $state(400);

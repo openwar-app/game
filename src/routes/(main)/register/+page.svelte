@@ -134,7 +134,7 @@
         </select>
 
 
-        <button on:click={register} class="btn btn-red" disabled={registerButtonDisabled}>{$t('website.register.buttonText')}</button>
+        <button onclick={register} class="btn btn-red" disabled={registerButtonDisabled}>{$t('website.register.buttonText')}</button>
     </div>
 
 </div>

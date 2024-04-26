@@ -14,7 +14,8 @@ $effect(() => {
     loginButtonDisabled = !email || !password;
 });
 
-async function login() {
+async function login(event) {
+    event.preventDefault();
     if (loginButtonDisabled) return;
     let result = await fetch(location.href, {
         method: 'POST',
@@ -50,7 +51,7 @@ async function login() {
     {#if error !== ''}
         <p class="text-red-500">{$t(error)}</p>
     {/if}
-    <form method="post" on:submit|preventDefault={login}>
+    <form method="post" onsubmit={login}>
     <div class="w-72 grid grid-cols-[max-content_auto] grid-gap-4">
 
         <label for="input-email">{$t('website.register.email')}</label>
@@ -60,7 +61,7 @@ async function login() {
         <input bind:value={password} type="password" id="input-password">
 
 
-        <button on:click={login} class="btn btn-red"
+        <button onclick={login} class="btn btn-red"
                 disabled={loginButtonDisabled}>{$t('website.login.buttonText')}</button>
 
     </div>

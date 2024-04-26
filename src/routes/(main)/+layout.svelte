@@ -3,6 +3,9 @@
     import { getContext } from 'svelte';
     import { page } from '$app/stores';
 
+
+    let {children} = $props();
+
     let isActive: boolean = true;
 
     let locales : string[] = getContext('serverLocales') ?? ['en'];
@@ -70,7 +73,7 @@
 
         </div>
         <div class="px-4 border border-gray-600 border-r-0 border-t-0 border-b-0 w-full">
-            <slot />
+            {@render children()}
         </div>
     </div>
 

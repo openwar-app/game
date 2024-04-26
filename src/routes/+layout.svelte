@@ -1,10 +1,10 @@
 <script lang="ts">
     import "../app.css";
-    import {setContext } from 'svelte';
+    import {setContext, type Snippet} from 'svelte';
     import type { LayoutData } from './$types';
 
 
-    let {data} = $props();
+    let {data, children} : {data: LayoutData, children: Snippet} = $props();
 
 
     setContext('serverLocales', data.serverLocales);
@@ -13,4 +13,4 @@
 
 </script>
 
-<slot />
+{@render children()}

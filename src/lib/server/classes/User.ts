@@ -141,7 +141,6 @@ export class User {
 
 
         this._user.mapView = newPoly;
-        console.log(JSON.stringify(newPoly));
 
 
         this._user.save();

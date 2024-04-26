@@ -39,7 +39,8 @@ const startupWebsocketServer = () => {
     if (wss !== undefined) {
         wss.on('connection', (ws: WebSocket, _request) => {
             const cookie = (_request.headers.cookie ?? '') as string;
-            let sessionId = cookie.split(';').find(c => c.trim().startsWith('sessionid='))?.substring(10) ?? '';
+            let sessionId = cookie.split(';').find(c => c.trim().startsWith('sessionid='))?.trim().substring(10) ?? '';
+
             let session = createOrGet(sessionId);
             if (session.data.userid === null) {
                 ws.send(JSON.stringify(new Packet.Logout()));

@@ -6,7 +6,7 @@
     import type {UserData} from "$lib/shared/network/UserData";
     import ClientData from "$lib/client/ClientData.svelte";
 
-    let {data}: {data: PageData} = $props();
+    let {data, children}: {data: PageData, children: Snippet} = $props();
     setUserId(data.userId);
 
     let openEvent, closeEvent, userDataEvent;
@@ -44,4 +44,4 @@
 
 </script>
 
-<slot />
+{@render children()}
