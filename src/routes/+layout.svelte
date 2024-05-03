@@ -5,8 +5,6 @@
 
 
     let {data, children} : {data: LayoutData, children: Snippet} = $props();
-
-
     setContext('serverLocales', data.serverLocales);
 
 
