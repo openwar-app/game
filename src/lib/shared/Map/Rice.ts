@@ -1,6 +1,6 @@
 import {MapField} from "$lib/shared/Map/MapField";
 
-var MapData : MapField[] = [];
+const MapData : MapField[] = [];
 for(let x = 0; x < 7; x++) {
     for(let y = 0; y < 4; y++) {
         MapData.push(new MapField({

@@ -1,4 +1,3 @@
-import type {TypeMapLogic} from "$lib/shared/Map/logic/TypeMapLogic";
 import MapRice from "$lib/shared/Map/Rice";
 import {MapField} from "$lib/shared/Map/MapField";
 

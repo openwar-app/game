@@ -5,7 +5,8 @@
         top: 0;
         width: 100%;
         height: 100%;
-        background: green;
+        background-image: var(--background-image);
+        background-size: cover;
 
         box-shadow: inset 5px 5px 15px -6px #FFFFFF,
         inset -5px -5px 15px -6px #000000;
@@ -67,18 +68,10 @@
     let POS_X = $derived(_UserData?.posx ?? 0);
     let POS_Y = $derived(_UserData?.posy ?? 0);
     let {posx, posy} = $props();
+    let MapField = $state();
+    MapField = getMapField(posx, posy) ?? DefaultField;
 
 
-    let MapField = getMapField(posx, posy) ?? DefaultField;
-    let computedStyle = {};
-    if (MapField) {
-        computedStyle = {
-            "backgroundImage": `url('${MapField.image}')`
-        }
-        if(MapField.imageSlice === undefined) {
-            computedStyle['backgroundSize'] = 'cover';
-        }
-    }
 
 
 
@@ -128,10 +121,13 @@
 
 
 </script>
-<div class="field" class:currentField={IsCurrentField} class:neighbourField={IsNeighbourField} class:isEnterable
-     style:background-image={computedStyle.backgroundImage}
-     style:background-size={computedStyle.backgroundSize}
+<div class="field"
+     class:currentField={IsCurrentField}
+     class:neighbourField={IsNeighbourField}
+     class:isEnterable
      class:slicedBg={MapField.imageSlice !== undefined}
+
+     style:--background-image={`url(${MapField.image})`}
      style:--slice-x={MapField.imageSlice?.x}
      style:--slice-y={MapField.imageSlice?.y}
      style:--slice-scale={MapField.imageSlice?.scale}
