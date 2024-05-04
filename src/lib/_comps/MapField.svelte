@@ -11,6 +11,13 @@
         inset -5px -5px 15px -6px #000000;
         pointer-events: none;
 
+
+
+        &.slicedBg {
+            background-position-x: calc(-1 * var(--slice-x) * var(--fieldsize));
+            background-position-y: calc(-1 * var(--slice-y) * var(--fieldsize));
+            background-size: calc(var(--slice-scale) * 100%);
+        }
     }
 
     .currentField {
@@ -28,11 +35,9 @@
         right: 0;
     }
 
-    .neighbourField {
+    .neighbourField.isEnterable {
         .clickoverlay {
             display: block;
-
-            background: red;
             pointer-events: all;
             cursor: pointer;
         }
@@ -55,11 +60,31 @@
     import {PlayerMoveTo} from "$lib/shared/network/PlayerMoveTo";
     import {type Pair} from "polygon-clipping";
     import {isPointInMultiPolygon} from "$lib/shared/utils";
+    import {DefaultField, getMapField} from "$lib/shared/Map/MapData";
+    import type {TypeMapLogic} from "$lib/shared/Map/logic/TypeMapLogic";
 
     let _UserData = $derived(ClientData.userData) as UserData;
     let POS_X = $derived(_UserData?.posx ?? 0);
     let POS_Y = $derived(_UserData?.posy ?? 0);
     let {posx, posy} = $props();
+
+
+    let MapField = getMapField(posx, posy) ?? DefaultField;
+    let computedStyle = {};
+    if (MapField) {
+        computedStyle = {
+            "backgroundImage": `url('${MapField.image}')`
+        }
+        if(MapField.imageSlice === undefined) {
+            computedStyle['backgroundSize'] = 'cover';
+        }
+    }
+
+
+
+    let logic: null|TypeMapLogic = $state(null);
+    MapField.getLogic().then(value => logic = value);
+    let isEnterable = $derived(logic?.isEnterable() ?? false);
 
     let IsCurrentField = $derived(posx === POS_X && posy === POS_Y);
     let IsNeighbourField = $derived(
@@ -67,6 +92,7 @@
     )
 
     function moveTo() {
+        if(!isEnterable) return false;
         let direction = {
             x: posx - POS_X,
             y: posy - POS_Y
@@ -75,6 +101,7 @@
     }
 
     let point: Pair = [posx, posy];
+
 
 
     let MapView = $derived(ClientData.MapView.polygon);
@@ -101,9 +128,15 @@
 
 
 </script>
-<div class="field" class:currentField={IsCurrentField} class:neighbourField={IsNeighbourField}
+<div class="field" class:currentField={IsCurrentField} class:neighbourField={IsNeighbourField} class:isEnterable
+     style:background-image={computedStyle.backgroundImage}
+     style:background-size={computedStyle.backgroundSize}
+     class:slicedBg={MapField.imageSlice !== undefined}
+     style:--slice-x={MapField.imageSlice?.x}
+     style:--slice-y={MapField.imageSlice?.y}
+     style:--slice-scale={MapField.imageSlice?.scale}
      class:isHidden={IsHidden}>
-    <div class="clickoverlay" on:click={moveTo}>
+    <div class="clickoverlay" onclick={moveTo} role="button">
 
     </div>
 </div>

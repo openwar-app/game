@@ -21,7 +21,7 @@
 <svelte:head>
     <title>OpenWar Game</title>
 </svelte:head>
-<svelte:window on:mouseup={() => resizing=false} on:mousemove={resize}/>
+<svelte:window onmouseup={() => resizing=false} onmousemove={resize}/>
 <style lang="postcss">
 
     #resizeLeftColBorder {
@@ -52,7 +52,7 @@
             <div class="flex-1 p-2 relative">
                 <svelte:component this={infoBoxLeft? InfoBox : MainBox}/>
             </div>
-            <div id="resizeLeftColBorder" class="bg-gray-800 overflow-hidden" on:mousedown={() => resizing = true}>aaa
+            <div id="resizeLeftColBorder" class="bg-gray-800 overflow-hidden" onmousedown={() => resizing = true}>
             </div>
 
         </div>

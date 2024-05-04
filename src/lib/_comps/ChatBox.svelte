@@ -33,7 +33,8 @@
     }
 
 
-    function sendChat() {
+    function sendChat(e) {
+        e.preventDefault();
         let msg = chatmsg.trim();
         if (msg.length > 0) {
             websocket.sendPacket(new Packet.SendChat(msg));
@@ -111,13 +112,15 @@
     </div>
 
     <div class="input-line" class:opacity-0={!_showChat}>
-        <form method="POST" on:submit|preventDefault={sendChat}>
-            <input type="text" name="inputchat" class="p-2 outline-0 text-white" on:keypress|stopPropagation={()=>{}}
-                   on:keydown|stopPropagation={(e) => {
-                if(e.key === 'Escape') {
-                    hideChat();
-                }
-            }}
+        <form method="POST" onsubmit={sendChat}>
+            <input type="text" name="inputchat" class="p-2 outline-0 text-white"
+                   onkeypress={(e)=>{e.stopPropagation();}}
+                   onkeydown={(e) => {
+                       e.stopPropagation();
+                        if(e.key === 'Escape') {
+                            hideChat();
+                        }
+                   }}
                    bind:value={chatmsg} bind:this={input}/>
         </form>
     </div>

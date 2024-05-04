@@ -8,6 +8,7 @@ import {ChatMessage} from "$lib/shared/network/ChatMessage";
 import {UserFactory} from "$lib/server/classes/UserFactory";
 import type {PlayerMoveTo} from "$lib/shared/network/PlayerMoveTo";
 import {MapView} from "$lib/shared/network/MapView";
+import {getMapField} from "$lib/shared/Map/MapData";
 
 export class ClientConnection {
     ws: WebSocket;
@@ -38,6 +39,10 @@ export class ClientConnection {
                 x: user.getPosition().x + x,
                 y: user.getPosition().y + y
             };
+            let field = await getMapField(newPos.x, newPos.y);
+            if(field === null) return;
+            if(!(await field.getLogic()).isEnterable()) return;
+
 
 
             user.setPosition(newPos);
