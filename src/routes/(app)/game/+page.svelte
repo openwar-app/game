@@ -47,6 +47,7 @@
 </style>
 
 <div class="wrapper">
+    {#if ClientData.userData}
     <div class="flex  w-full h-full">
         <div id="leftcol" class="flex" style="width: {widthLeftCol}px">
             <div class="flex-1 p-2 relative">
@@ -61,4 +62,5 @@
         </div>
     </div>
     <BottomBar/>
+    {/if}
 </div>

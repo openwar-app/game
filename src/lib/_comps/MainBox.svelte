@@ -2,6 +2,7 @@
     import ChatBox from "./ChatBox.svelte";
     import Components from "$lib/client/ComponentsStore.svelte";
     import MapBox from "./MapBox.svelte";
+    import ClientData from "$lib/client/ClientData.svelte";
 
     let chatbox = $state(null);
     let mapbox = $state(null);

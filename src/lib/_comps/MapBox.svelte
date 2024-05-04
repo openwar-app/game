@@ -4,7 +4,7 @@
     import {Range} from "$lib/shared/Range";
     import {CachedMap} from "$lib/shared/CachedMap";
     import MapField from "$lib/_comps/MapField.svelte";
-    import {mount, unmount} from 'svelte';
+    import {mount, unmount, untrack} from 'svelte';
 
 
     import {websocket} from "$lib/client/websocket";
@@ -29,8 +29,8 @@
 
 
     let _UserData = $derived(ClientData.userData) as UserData;
-    let POS_X = $derived(_UserData?.posx ?? 0);
-    let POS_Y = $derived(_UserData?.posy ?? 0);
+    let POS_X = $derived(_UserData?.posx ?? -100);
+    let POS_Y = $derived(_UserData?.posy ?? - 100);
 
 
     const FIELD_SIZE = 75;
@@ -62,6 +62,11 @@
                     dimensions.h = cr.height;
                 }
             });
+
+            const cr = outerWrapper.getBoundingClientRect();
+            dimensions.w = cr.width;
+            dimensions.h = cr.height;
+
             observer.observe(outerWrapper);
         }
         return () => {
@@ -69,7 +74,7 @@
         }
     });
 
-    const wm = new WeakMap<Element, any>;
+
 
     const _mapCache = new CachedMap<string, any>(1000, (k) => {
         let elem = outerWrapper.querySelector(`[data-field="${k}"]`);
@@ -80,52 +85,77 @@
         delete map[k];
     });
     let map: { [key: string]: any } = $state({});
-    $effect(() => {
+
+    async function updateMapCache(X_RANGE, Y_RANGE) {
+        console.time('recalc')
+
+
+
         _mapCache.cleanLock = true;
         Y_RANGE.forEach((Y) => {
             X_RANGE.forEach((X) => {
                 _mapCache.put(`${X}:${Y}`, {X, Y});
             })
-        })
-        _mapCache.cleanLock = false;
-        _mapCache.clean();
-        _mapCache.entries().forEach(async ([k, v]) => {
-            if (typeof map[k] === 'undefined') {
-                map[k] = v;
-                let div = document.createElement('div');
-                div.classList.add('field');
-                div.setAttribute('data-field', `${v.X}:${v.Y}`);
-                div.setAttribute('data-posx', v.X);
-                div.setAttribute('data-posy', v.Y);
-                div.style.setProperty('--posx', v.X);
-                div.style.setProperty('--posy', v.Y);
-
-                div.mapfield = mount(MapField, {
-                    target: div,
-                    props: {
-                        posx: v.X,
-                        posy: v.Y
-                    }
-                });
-                outerWrapper.appendChild(div);
-
-
-            }
-
         });
+        _mapCache.cleanLock = false;
+        await _mapCache.clean();
+        console.timeLog('recalc', 'mapcache done');
+        let promises = [];
+        for(let [k, v] of _mapCache.entries()) {
+            promises.push(
+                (async () => {
+                    if (typeof map[k] === 'undefined') {
+
+                        let div = document.createElement('div');
+                        div.classList.add('field');
+                        div.setAttribute('data-field', `${v.X}:${v.Y}`);
+                        div.setAttribute('data-posx', v.X);
+                        div.setAttribute('data-posy', v.Y);
+                        div.style.setProperty('--posx', v.X);
+                        div.style.setProperty('--posy', v.Y);
+
+                        div.mapfield = mount(MapField, {
+                            target: div,
+                            props: {
+                                posx: v.X,
+                                posy: v.Y
+                            }
+                        });
+                        outerWrapper.appendChild(div);
+                    }
+                    map[k] = v;
+                })()
+            );
+        }
+        await Promise.all(promises);
+        scrollTo();
+        console.timeEnd('recalc');
+    }
+
+    $effect(() => {
+        X_RANGE, Y_RANGE;
+        untrack(()=> {
+            updateMapCache(X_RANGE, Y_RANGE);
+        })
     });
 
+
+
+    function scrollTo() {
+
+
+
+        outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+            inline: 'center'
+        });
+    }
 
     $effect(() => {
         // noinspection CommaExpressionJS
         dimensions.w, dimensions.h, POS_X, POS_Y;
-
-            outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
-                behavior: 'instant',
-                block: 'center',
-                inline: 'center'
-            });
-
+        scrollTo();
     })
 
 </script>
@@ -137,7 +167,6 @@
         top: 0;
         bottom: 0;
         overflow: hidden;
-        background: blue;
     }
 
     /*noinspection CssUnusedSymbol*/
