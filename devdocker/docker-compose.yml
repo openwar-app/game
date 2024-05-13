@@ -19,7 +19,7 @@ services:
     volumes:
       - ../:/home/node/app
   database_init: #we use this container to fix the permissions of the database volume to make it usable for local user
-    image: postgres:16.2-bookworm
+    image: postgres:16.3-bookworm
     volumes:
       - ./data/pgsql:/var/lib/postgresql/data
     env_file:
@@ -35,7 +35,7 @@ services:
     depends_on:
       - database_init
     user: ${UID}:${GID}
-    image: postgres:16.2-bookworm
+    image: postgres:16.3-bookworm
     ports:
       - "127.0.0.1:5432:5432"
     env_file:
