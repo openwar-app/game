@@ -13,11 +13,11 @@ export const POST: RequestHandler = async ({request}) => {
     switch(body.action) {
         case 'validatemail': {
             const validate = await User.validateEmail(body.email, true);
-            return json(validate ? {status: 'ok' } : {status: 'error', error: validate});
+            return json(validate === true ? {status: 'ok' } : {status: 'error', error: validate});
         }
         case 'validatecharname': {
             const validate = await User.validateCharname(body.charname, true);
-            return json(validate ? {status: 'ok'} : {status: 'error', error: validate});
+            return json(validate === true  ? {status: 'ok'} : {status: 'error', error: validate});
         }
 
         case 'register': {

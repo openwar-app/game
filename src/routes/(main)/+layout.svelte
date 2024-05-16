@@ -2,6 +2,7 @@
     import { t, locale } from '$lib/translations';
     import { getContext } from 'svelte';
     import { page } from '$app/stores';
+    import Select, { Option} from "@smui/select";
 
 
     let {children} = $props();
@@ -33,7 +34,7 @@
         li {
             @apply py-1 px-4 bg-gray-200 my-1 border border-transparent;
             &.active {
-                background: linear-gradient(theme('colors.gray.300'), theme('colors.gray.200'));
+                background: linear-gradient(to bottom, theme('colors.gray.300'), theme('colors.gray.200'));
                 @apply border-gray-400;
                 a {
                     @apply text-red-600;
@@ -61,13 +62,11 @@
                 </ul>
 
             <div class="my-4">
-                <span>{$t('website.nav.choose_language')}</span>
-                <select bind:value={currentLocale} class="w-full bg-gray-200 border border-gray-600 px-2 py-1">
+                <Select bind:value={currentLocale} label={$t('website.nav.choose_language')}>
                     {#each locales as locale}
-                        <option value={locale}>{$t('locale.'+locale)}</option>
+                        <Option value={locale}>{$t('locale.'+locale)}</Option>
                     {/each}
-                </select>
-
+                </Select>
             </div>
 
 

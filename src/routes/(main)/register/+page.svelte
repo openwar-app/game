@@ -3,6 +3,11 @@
     import type { PageData } from './$types';
     import {t} from "$lib/translations";
     import type {RaceEnum} from "$lib/shared/races/RaceEnum";
+    import Select, {Option} from "@smui/select";
+    import Textfield from "@smui/textfield";
+    import HelperText from '@smui/textfield/helper-text';
+
+
     let {data} : {data:PageData} = $props();
 
 
@@ -14,10 +19,26 @@
 
     type errorType = { status:'ok'|'error', error?: string }|null;
 
-    let error : { email: errorType, password: errorType, charname: errorType } = $state({email: null, password: null, charname:null});
+    let error : {
+        emailFlag:boolean, email: errorType,
+        passwordFlag:boolean, password: errorType,
+        charnameFlag:boolean, charname: errorType
+    } = $state({
+        emailFlag: false, email: null,
+        passwordFlag:false, password: null,
+        charnameFlag: false, charname:null
+    });
+
 
 
     let registerButtonDisabled = $derived(!(error.charname?.status === 'ok' && error.email?.status === 'ok' && error.password?.status === 'ok'));
+
+
+    $effect(() => {
+        error.emailFlag = error.email !== null;
+        error.passwordFlag = error.password !== null;
+        error.charnameFlag = error.charname !== null;
+    });
 
     $effect(() => {
         email;
@@ -31,6 +52,7 @@
                 body: JSON.stringify({action: 'validatemail', email})
             });
             error.email = await res.json();
+
         })();
     });
 
@@ -92,46 +114,77 @@
     }
 
 </script>
-<style lang="postcss">
-    input {
-        @apply shadow border p-2 rounded;
-    }
-</style>
+
 <svelte:head>
     <title>{$t('website.title.register')}</title>
 </svelte:head>
 
+
 <div class="">
     <h3 class="text-xl mb-4">{$t('website.title.register')}</h3>
-    {#if error.email && error.email.status === 'error'}
-        <p class="text-red-500">{$t(error.email.error)}</p>
-    {/if}
-    {#if error.password && error.password.status === 'error'}
-        <p class="text-red-500">{$t(error.password.error)}</p>
-    {/if}
-    {#if error.charname && error.charname.status === 'error'}
-        <p class="text-red-500">{$t(error.charname.error)}</p>
-    {/if}
-    <div class="w-full grid grid-cols-[max-content_auto] grid- gap-4">
-        <label for="input-email">{$t('website.register.email')}</label>
-        <input bind:value={email} type="email" id="input-email" />
 
-        <label for="input-password">{$t('website.register.password')}</label>
-        <input bind:value={password} type="password" id="input-password">
+    <div class="w-96">
+        <div class="my-4">
+            <Textfield
+                    class="shaped-outlined w-full"
+                    variant="outlined"
+                    label={$t('website.register.email')} bind:value={email} type="email" id="input-email"
+                    bind:invalid={error.emailFlag}>
+                    <HelperText persistent slot="helper">
+                        {#if error.email && error.email.status === 'error'}
+                            <span class="text-red-600">{$t(error.email.error)}</span>
+                        {/if}
+                    </HelperText>
+            </Textfield>
+        </div>
+        <div class="my-4">
+            <Textfield
+                    bind:invalid={error.passwordFlag}
+                    class="shaped-outlined w-full"
+                    variant="outlined"
+                    label={$t('website.register.password')} bind:value={password} type="password" id="input-password">
+                <HelperText persistent slot="helper">
+                    {#if error.password && error.password.status === 'error'}
+                        <span class="text-red-600"> {$t(error.password.error)}</span>
+                    {/if}
+                </HelperText>
+            </Textfield>
+        </div>
+         <div class="my-4">
+            <Textfield       bind:invalid={error.passwordFlag}    class="shaped-outlined w-full"
+                               variant="outlined" label={$t('website.register.password-repeat')} bind:value={passwordRepeat} type="password" id="input-password-confirm"
+            >
+                <HelperText persistent slot="helper">
+                    {#if error.password && error.password.status === 'error'}
+                        <span class="text-red-600"> {$t(error.password.error)}</span>
+                    {/if}
+                </HelperText>
+            </Textfield>
+        </div>
+        <div class="my-4">
+            <Textfield
+                    bind:invalid={error.charnameFlag}
+                    class="shaped-outlined w-full"
+                               variant="outlined" label={$t('website.register.name')} bind:value={charname}  type="text" id="input-name">
+                <HelperText persistent slot="helper">
+                    {$t('website.register.name-small')}
+                    {#if error.charname && error.charname.status === 'error'}
+                        <span class="ml-2 text-red-600"> {$t(error.charname.error)}</span>
+                    {/if}
+                </HelperText>
+            </Textfield>
+           </div>
 
-        <label for="input-password-confirm">{$t('website.register.password-repeat')}</label>
-        <input bind:value={passwordRepeat} type="password" id="input-password-confirm">
+        <div class="my-4">
+            <Select class="shaped-outlined w-full"
+                    variant="outlined" bind:value={race} id="select-race" label={$t('website.register.select-race')}>
+                {#each data.races as race}
+                    <Option value={race}>{$t('race.' + race)}</Option>
+                {/each}
+            </Select>
+        </div>
 
 
-        <label for="input-name">{$t('website.register.name')}</label>
-        <input bind:value={charname} class="input" placeholder={$t('website.register.name-small')} type="text" id="input-name" />
-
-        <label for="select-race">{$t('website.register.select-race')}</label>
-        <select bind:value={race} id="select-race">
-            {#each data.races as race}
-                <option value={race}>{$t('race.' + race)}</option>
-            {/each}
-        </select>
 
 
         <button onclick={register} class="btn btn-red" disabled={registerButtonDisabled}>{$t('website.register.buttonText')}</button>
