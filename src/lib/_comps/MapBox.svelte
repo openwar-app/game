@@ -98,6 +98,9 @@
             dimensions.h = cr.height;
 
             observer.observe(outerWrapper);
+            setTimeout(() => {
+                scrollTo();
+            }, 0);
         }
         return () => {
             observer?.disconnect();
@@ -124,7 +127,7 @@
         scrollTo();
     });
 
-    setTimeout(scrollTo, 100);
+
 
 </script>
 <style lang="postcss">
