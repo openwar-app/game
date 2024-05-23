@@ -2,13 +2,12 @@
     import ClientData from "$lib/client/ClientData.svelte";
     import type {UserData} from "$lib/shared/User/UserData";
     import {Range} from "$lib/shared/Range";
-    import {CachedMap} from "$lib/shared/CachedMap";
     import MapField from "$lib/_comps/MapField.svelte";
-    import {mount, unmount, untrack} from 'svelte';
 
 
     import {websocket} from "$lib/client/websocket";
     import {MapView} from "$lib/shared/network/MapView";
+    import {untrack} from "svelte";
 
     $effect(() => {
         let MapViewListener = websocket.on('onPacketMapView', (mv: MapView) => {
@@ -36,7 +35,7 @@
     const FIELD_SIZE = 75;
 
 
-    let observer = null;
+    let observer: null|ResizeObserver = null;
 
     let FIELDS_PER_ROW = $derived((Math.ceil(dimensions.w / FIELD_SIZE ?? 75) + 2) ?? 3);
     let FIELDS_PER_COL = $derived((Math.ceil(dimensions.h / FIELD_SIZE ?? 75) + 2) ?? 3);
@@ -51,6 +50,41 @@
         POS_X - (FIELDS_PER_ROW / 2) - 1,
         POS_X + (FIELDS_PER_ROW / 2) + 1
     ));
+
+    let mapFields: fieldInfo[] = $state([]);
+    type fieldInfo = {x: number, y: number, _uid: string};
+
+    let MIN_X = $state(0),
+        MAX_X = $state(0),
+        MIN_Y = $state(0),
+        MAX_Y = $state(0);
+    $effect(() => {
+        [MIN_X, MAX_X, MIN_Y, MAX_Y] = [
+            Math.min(...X_RANGE),
+            Math.max(...X_RANGE),
+            Math.min(...Y_RANGE),
+            Math.max(...Y_RANGE)
+        ];
+
+        console.log('calc map', MIN_X, MAX_X, MIN_Y, MAX_Y);
+        console.log('rows', FIELDS_PER_COL, 'height', dimensions.h, 'fields', dimensions.h / 75);
+        untrack(() => {
+            mapFields = mapFields.filter(f => {
+                return f.x >= MIN_X && f.x <= MAX_X && f.y >= MIN_Y && f.y <= MAX_Y;
+            });
+            for(let x = MIN_X; x <= MAX_X; x++) {
+                for(let y = MIN_Y; y <= MAX_Y; y++) {
+                    if(!mapFields.find(f => f.x === x && f.y === y)) {
+                        mapFields.push({x, y, _uid: `${x}:${y}`});
+                    }
+
+                }
+            }
+        });
+
+
+
+    });
 
 
     $effect(() => {
@@ -70,81 +104,15 @@
             observer.observe(outerWrapper);
         }
         return () => {
-            observer.disconnect();
+            observer?.disconnect();
         }
     });
 
 
-
-    const _mapCache = new CachedMap<string, any>(1000, (k) => {
-        let elem = outerWrapper.querySelector(`[data-field="${k}"]`);
-        if (elem) {
-            unmount(elem.mapfield);
-            elem.remove();
-        }
-        delete map[k];
-    });
-    let map: { [key: string]: any } = $state({});
-
-    async function updateMapCache(X_RANGE, Y_RANGE) {
-        console.time('recalc')
-
-
-
-        _mapCache.cleanLock = true;
-        Y_RANGE.forEach((Y) => {
-            X_RANGE.forEach((X) => {
-                _mapCache.put(`${X}:${Y}`, {X, Y});
-            })
-        });
-        _mapCache.cleanLock = false;
-        await _mapCache.clean();
-        console.timeLog('recalc', 'mapcache done');
-        let promises = [];
-        for(let [k, v] of _mapCache.entries()) {
-            promises.push(
-                (async () => {
-                    if (typeof map[k] === 'undefined') {
-
-                        let div = document.createElement('div');
-                        div.classList.add('field');
-                        div.setAttribute('data-field', `${v.X}:${v.Y}`);
-                        div.setAttribute('data-posx', v.X);
-                        div.setAttribute('data-posy', v.Y);
-                        div.style.setProperty('--posx', v.X);
-                        div.style.setProperty('--posy', v.Y);
-
-                        div.mapfield = mount(MapField, {
-                            target: div,
-                            props: {
-                                posx: v.X,
-                                posy: v.Y
-                            }
-                        });
-                        outerWrapper.appendChild(div);
-                    }
-                    map[k] = v;
-                })()
-            );
-        }
-        await Promise.all(promises);
-        scrollTo();
-        console.timeEnd('recalc');
-    }
-
-    $effect(() => {
-        X_RANGE, Y_RANGE;
-        untrack(()=> {
-            updateMapCache(X_RANGE, Y_RANGE);
-        })
-    });
 
 
 
     function scrollTo() {
-
-
-
         outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
             behavior: 'smooth',
             block: 'center',
@@ -169,19 +137,6 @@
         overflow: hidden;
     }
 
-    /*noinspection CssUnusedSymbol*/
-    .outerwrapper > :global(.field) {
-        width: var(--fieldsize);
-        height: var(--fieldsize);
-
-        border: 1px solid black;
-        box-sizing: border-box;
-
-        position: absolute;
-        left: calc(100000px + var(--posx) * var(--fieldsize));
-        top: calc(100000px - (var(--posy) * var(--fieldsize)));
-    }
-
     .positiondisplay {
         position: absolute;
         top: 5px;
@@ -196,7 +151,12 @@
     }
 </style>
 <div class="outerwrapper" bind:this={outerWrapper} style="--fieldsize:{FIELD_SIZE}px">
-
+    {#each mapFields as field (field._uid)}
+        <MapField   posx={field.x} posy={field.y}
+                    relx={field.x - MIN_X}
+                    rely={MAX_Y - field.y}
+        />
+    {/each}
 </div>
 <div class="positiondisplay shadow-2xl backdrop-blur-sm">
     {POS_X} : {POS_Y}

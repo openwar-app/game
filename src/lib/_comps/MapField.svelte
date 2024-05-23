@@ -3,8 +3,8 @@
         position: absolute;
         left: 0;
         top: 0;
-        width: 100%;
-        height: 100%;
+        width: var(--fieldsize);
+        height: var(--fieldsize);
         background-image: var(--background-image);
         background-size: cover;
 
@@ -67,7 +67,7 @@
     let _UserData = $derived(ClientData.userData) as UserData;
     let POS_X = $derived(_UserData?.posx ?? 0);
     let POS_Y = $derived(_UserData?.posy ?? 0);
-    let {posx, posy} = $props();
+    let {posx, posy, relx, rely} = $props();
     let MapField = $state();
     MapField = getMapField(posx, posy) ?? DefaultField;
 
@@ -122,6 +122,7 @@
 
 </script>
 <div class="field"
+     data-field={`${posx}:${posy}`}
      class:currentField={IsCurrentField}
      class:neighbourField={IsNeighbourField}
      class:isEnterable
@@ -131,6 +132,10 @@
      style:--slice-x={MapField.imageSlice?.x}
      style:--slice-y={MapField.imageSlice?.y}
      style:--slice-scale={MapField.imageSlice?.scale}
+
+     style:left={`calc(var(--fieldsize) * ${relx})`}
+     style:top={`calc(var(--fieldsize) * ${rely})`}
+
      class:isHidden={IsHidden}>
     <div class="clickoverlay" onclick={moveTo} role="button">
 
