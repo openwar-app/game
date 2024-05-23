@@ -7,19 +7,16 @@
 
     import {websocket} from "$lib/client/websocket";
     import {MapView} from "$lib/shared/network/MapView";
-    import {untrack} from "svelte";
+    import {tick, untrack} from "svelte";
 
     $effect(() => {
         let MapViewListener = websocket.on('onPacketMapView', (mv: MapView) => {
             ClientData.MapView = mv;
         });
-
         websocket.sendPacket(new MapView());
-
         return () => {
             websocket.off('onPacketMapView', MapViewListener);
         }
-
     })
 
 
@@ -51,6 +48,8 @@
         POS_X + (FIELDS_PER_ROW / 2) + 1
     ));
 
+
+
     let mapFields: fieldInfo[] = $state([]);
     type fieldInfo = {x: number, y: number, _uid: string};
 
@@ -65,9 +64,6 @@
             Math.min(...Y_RANGE),
             Math.max(...Y_RANGE)
         ];
-
-        console.log('calc map', MIN_X, MAX_X, MIN_Y, MAX_Y);
-        console.log('rows', FIELDS_PER_COL, 'height', dimensions.h, 'fields', dimensions.h / 75);
         untrack(() => {
             mapFields = mapFields.filter(f => {
                 return f.x >= MIN_X && f.x <= MAX_X && f.y >= MIN_Y && f.y <= MAX_Y;
@@ -113,18 +109,22 @@
 
 
     function scrollTo() {
-        outerWrapper.querySelector(`[data-field="${POS_X}:${POS_Y}"]`)?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-            inline: 'center'
-        });
+        let w = dimensions.w;
+        let h = dimensions.h;
+        let scrollW = outerWrapper.scrollWidth;
+        let scrollH = outerWrapper.scrollHeight;
+        let x = (scrollW - w) / 2;
+        let y = (scrollH - h) / 2;
+        outerWrapper.scrollTo(x, y);
     }
 
     $effect(() => {
         // noinspection CommaExpressionJS
         dimensions.w, dimensions.h, POS_X, POS_Y;
         scrollTo();
-    })
+    });
+
+    setTimeout(scrollTo, 100);
 
 </script>
 <style lang="postcss">

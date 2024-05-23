@@ -24,7 +24,6 @@
     .currentField {
         box-shadow: inset 5px 5px 15px -6px #FFFF00,
         inset -5px -5px 15px -6px #FFDD00;
-        border: 1px solid #FFFF00;
     }
 
     .clickoverlay {
