@@ -1,4 +1,4 @@
-{
+export default {
   "subheader": "OpenWar is the unofficial open source successor to the browser game \"freewar.com\".",
 
   "nav": {

@@ -1,5 +1,5 @@
 <style lang="postcss">
-    .Monsterlist, .Itemlist {
+    .Monsterlist, .Itemlist, .FieldDescription {
         border: 2px solid black;
         border-radius: 5px;
         margin: 2em 0.25em;
@@ -16,22 +16,57 @@
             padding: 0.25em 1em;
             @apply border-t border-gray-800;
         }
+
+        div.content {
+            padding: 0.25em;
+        }
     }
 
     .Itemlist .Header {
         background: linear-gradient(to bottom, theme('colors.green.900'), theme('colors.green.500'));
     }
 
-</style>
-<h1>Du stehst auf einer Wiese</h1>
-<div>
-    Hier steht auch ganz vieeeel Text
-</div>
+    .FieldDescription .Header {
+        background: linear-gradient(to bottom, theme('colors.blue.500'), theme('colors.blue.300'));
 
+    }
+
+</style>
+<script lang="ts">
+    import ClientData from "$lib/client/ClientData.svelte";
+    import type {UserData} from "$lib/shared/User/UserData";
+    import {DefaultField, getMapField} from "$lib/shared/Map/MapData";
+    import type {TypeMapLogic} from "$lib/shared/Map/logic/TypeMapLogic";
+    import {MapField} from "$lib/shared/Map/MapField";
+    import Default from "$lib/shared/Map/logic/Default";
+    import {t} from "$lib/translations";
+    let _UserData = $derived(ClientData.userData) as UserData;
+    let POS_X = $derived(_UserData?.posx ?? 0);
+    let POS_Y = $derived(_UserData?.posy ?? 0);
+    let mapField : MapField|null = $state(null);
+
+    $effect(() => {
+        mapField = getMapField(POS_X, POS_Y) ?? DefaultField;
+        mapField.getLogic().then(value => logic = value);
+    });
+    let logic: typeof TypeMapLogic = $state(Default);
+
+
+
+</script>
+<div class="FieldDescription">
+    <div class="Header">
+        <h2>{$t('game.infobox.description')}</h2>
+    </div>
+    <div class="content">
+        <svelte:component this={logic?.getDescriptionComponent(mapField)} mapField={mapField}/>
+    </div>
+
+</div>
 
 <div class="Monsterlist">
     <div class="Header">
-        <h2>Monster auf diesem Feld</h2>
+        <h2>{$t('game.infobox.monsterlistheader')}</h2>
 
     </div>
     <ul>
@@ -44,7 +79,7 @@
 
 <div class="Itemlist">
     <div class="Header">
-        <h2>Items auf diesem Feld</h2>
+        <h2>{$t('game.infobox.itemlistheader')}</h2>
 
     </div>
     <ul>

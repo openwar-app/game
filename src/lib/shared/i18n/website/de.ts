@@ -1,4 +1,4 @@
-{
+export default {
   "subheader": "OpenWar ist der inoffizielle Open-Source-Nachfolger vom Browsergame freewar.de",
 
   "introduction_text": "OpenWar ist ein kostenloses Rollenspiel-Browsergame mit einem mittelalterlichen Fantasy-Setting. Du kannst die Welt erkunden, Monster bekämpfen, Quests erfüllen, mit anderen Spielern handeln und vieles mehr. <a href=\"/register\">Jetzt anmelden</a> und dein Abenteuer starten!",

@@ -6,6 +6,8 @@ import type {ClientConnection} from "$lib/server/classes/ClientConnection";
 import type {NetPacket} from "$lib/shared/network/NetPacket";
 import polygonClipping, {type MultiPolygon, type Polygon} from 'polygon-clipping';
 import {MapView} from "$lib/shared/network/MapView";
+import type {UserStats} from "$lib/shared/User/UserStats";
+import Races from "$lib/shared/races";
 
 export class User {
 
@@ -39,7 +41,7 @@ export class User {
 
     static async validatePassword(email: string, password: string) {
         const user = await UserFactory.byEmail(email);
-        if(user) {
+        if (user) {
             return argon2.verify(user._user.password, password);
         }
         return false;
@@ -52,25 +54,25 @@ export class User {
                 email
             }
         });
-        if(findUser) {
+        if (findUser) {
             return new User(findUser);
         }
         return null;
     }
 
-    static async validateEmail(email: string, failIfExists:boolean=false) : Promise<true|string> {
+    static async validateEmail(email: string, failIfExists: boolean = false): Promise<true | string> {
         const validEmail = emailValidator.validate(email);
-        if(!validEmail) {
+        if (!validEmail) {
             return 'website.register.invalid_email';
         }
 
-        if(failIfExists) {
+        if (failIfExists) {
             const findUser = await UserEntity.exists({
                 where: {
                     email
                 }
             });
-            if(findUser) {
+            if (findUser) {
                 return 'website.register.email_already_exists';
             }
         }
@@ -79,23 +81,23 @@ export class User {
 
     static async validateCharname(charname: string, failIfExists: boolean) {
         charname = charname.trim();
-        if(charname.length < 1) {
+        if (charname.length < 1) {
             return 'website.register.charname_too_short';
         }
-        if(charname.length > 16) {
+        if (charname.length > 16) {
             return 'website.register.charname_too_long';
         }
-        if(!charname.match(/^[a-zA-Z0-9 ]+$/)) {
+        if (!charname.match(/^[a-zA-Z0-9 ]+$/)) {
             return 'website.register.charname_invalid';
         }
 
-        if(failIfExists) {
+        if (failIfExists) {
             const findUser = await UserEntity.exists({
                 where: {
                     charname
                 }
             });
-            if(findUser) {
+            if (findUser) {
                 return 'website.register.charname_already_exists';
             }
         }
@@ -151,11 +153,11 @@ export class User {
         return this._user.mapView as MultiPolygon;
     }
 
-    getRace() {
+    getRaceID() {
         return this._user.race;
     }
 
-    getXP() {
+    getXP(): number {
         return this._user.xp
     }
 
@@ -163,5 +165,21 @@ export class User {
         this.connections.forEach(connection => {
             connection.send(packet)
         });
+    }
+
+    getCurrentLife(): number {
+        return Math.min(this._user.life, this.getMaximumLife());
+    }
+
+    getMaximumLife(): number {
+        return this.calculateStats().maxHp;
+    }
+
+    calculateStats(): UserStats {
+        return this.getRace().calculateStats(this);
+    }
+
+    getRace() {
+        return Races[this.getRaceID()];
     }
 }

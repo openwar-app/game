@@ -1,6 +1,6 @@
 import type {RaceEnum} from "$lib/shared/races/RaceEnum";
 import type {UserStats} from "$lib/shared/User/UserStats";
-import type User from "$lib/server/database/Entities/User";
+import type {User} from "$lib/server/classes/User";
 
 
 export class Race {

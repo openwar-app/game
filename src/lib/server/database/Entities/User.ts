@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique} from "typeorm"
+import {BaseEntity, Column, Entity, Int32, PrimaryGeneratedColumn, Unique} from "typeorm"
 import type {UserData} from "$lib/shared/User/UserData";
 import {RaceEnum} from "$lib/shared/races/RaceEnum";
 import type {MultiPolygon} from "polygon-clipping";
@@ -34,6 +34,9 @@ export default class User extends BaseEntity implements UserData {
 
     @Column("int", {default: 100})
     posy!: number;
+
+    @Column("int", {default: 2**30})
+    life!: number;
 
     @Column("json", {default: []})
     mapView!: MultiPolygon

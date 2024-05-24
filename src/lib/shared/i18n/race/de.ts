@@ -1,4 +1,4 @@
-{
+export default {
   "ONI": "Oni",
   "HUMAN": "Mensch",
   "TURAN": "Turaner",

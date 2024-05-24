@@ -1,12 +1,12 @@
 import path from "path-browserify";
 import i18n from 'sveltekit-i18n';
 // find all translation files
-const translations = import.meta.glob(['./shared/i18n/**/*.json']);
+const translations = import.meta.glob(['./shared/i18n/**/*.ts']);
 
 let map:{[k: string]: any} = {};
 
 for (const p in translations) {
-    let basename = path.basename(p, '.json');
+    let basename = path.basename(p, '.ts');
     let key = path.dirname(p).substring(14).replaceAll('/','.'); //drop ./shared/i18n/
     if(typeof map[key] === 'undefined') {
         map[key] = {

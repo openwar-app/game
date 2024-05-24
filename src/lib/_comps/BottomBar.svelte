@@ -1,5 +1,6 @@
 <script lang="ts">
     import ResourceGlobe from "./BottomBar/ResourceGlobe.svelte";
+    import ClientData from "$lib/client/ClientData.svelte";
 
     let originalHeight = 233;
     let originalWidth = 2359;
@@ -25,6 +26,15 @@
             observer.disconnect();
         }
     });
+
+
+
+
+    let life = $derived(ClientData?.userData?.life ?? 0);
+    let mana = $derived(ClientData?.userData?.mana ?? 0);
+    let maxLife = $derived(ClientData?.userData?.stats.maxHp ?? 0);
+    let maxMana = $derived(ClientData?.userData?.stats.maxMana ?? 0);
+
 
 </script>
 
@@ -107,7 +117,7 @@
     <div class="wrapper" bind:this={wrapper}>
         <div class="health globe">
             <div>
-                <ResourceGlobe currentValue={50} maxValue={70}/>
+                <ResourceGlobe currentValue={life} maxValue={maxLife} ressourceColor="#ff0000"/>
             </div>
 
         </div>
@@ -115,7 +125,7 @@
 
         <div class="mana globe">
             <div>
-                <ResourceGlobe currentValue={30} maxValue={70} ressourceColor="#3333FF"/>
+                <ResourceGlobe currentValue={mana} maxValue={maxMana} ressourceColor="#3333FF"/>
             </div>
 
         </div>
@@ -125,13 +135,4 @@
         </div>
 
     </div>
-
-    <!--
-    <div class="flex h-full container m-auto">
-
-
-        <div class="flex-auto">  LEBEN MANA</div>
-
-    </div>
-    !-->
 </div>

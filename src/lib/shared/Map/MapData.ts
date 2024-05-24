@@ -8,6 +8,7 @@ export const DefaultField : MapField = new MapField({
     posy: 0,
     image: "/map/default.jpg",
     logic: async () => { return (await import("./logic/NotExisting")).default; },
+    description: "Default field"
 });
 
 const MapData : MapField[] = [];

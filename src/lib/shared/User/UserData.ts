@@ -6,5 +6,6 @@ export interface UserData {
     xp: number;
     posx: number;
     posy: number;
+    life: number;
 
 }
