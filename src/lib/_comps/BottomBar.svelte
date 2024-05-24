@@ -36,6 +36,9 @@
     let maxMana = $derived(ClientData?.userData?.stats.maxMana ?? 0);
 
 
+    import SettingsButtonPNG from "./BottomBar/bb_bar_menu_btn_settings.png";
+    import ItemsButtonPNG from "./BottomBar/bb_bar_menu_btn_items.png";
+
 </script>
 
 <style>
@@ -53,6 +56,42 @@
         width: 1937px;
         height: 233px;
         pointer-events: none;
+
+
+        .settingsButton {
+            position: absolute;
+            right: 552px;
+            top: 79px;
+            height: 65px;
+            width:64px;
+            background: rgba(0,0,0,.6);
+
+            img {
+                pointer-events: all;
+                cursor: pointer;
+                &:hover {
+                    filter: brightness(1.2);
+                }
+            }
+        }
+
+        .itemsButton {
+            position: absolute;
+            right: 632px;
+            top: 79px;
+            height: 65px;
+            width:64px;
+            background: rgba(0,0,0,.6);
+
+            img {
+                pointer-events: all;
+                cursor: pointer;
+                &:hover {
+                    filter: brightness(1.2);
+                }
+            }
+        }
+
     }
 
     .wrapper {
@@ -131,7 +170,15 @@
         </div>
 
         <div class="innerWrapper" style="width:{originalWidth}px; height: {originalHeight}px;">
-            <div class="bottomBarDesign"></div>
+            <div class="bottomBarDesign">
+                <div class="settingsButton">
+                    <img src={SettingsButtonPNG} alt="Settings" class="h-full w-full"/>
+                </div>
+                <div class="itemsButton">
+                    <img src={ItemsButtonPNG} alt="Inventory" class="h-full w-full"/>
+                </div>
+            </div>
+
         </div>
 
     </div>

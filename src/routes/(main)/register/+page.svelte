@@ -126,7 +126,7 @@
     <div class="w-96">
         <div class="my-4">
             <Textfield
-                    class="shaped-outlined w-full"
+                    class="shaped-outlined w-full bg-white"
                     variant="outlined"
                     label={$t('website.register.email')} bind:value={email} type="email" id="input-email"
                     bind:invalid={error.emailFlag}>
@@ -140,7 +140,7 @@
         <div class="my-4">
             <Textfield
                     bind:invalid={error.passwordFlag}
-                    class="shaped-outlined w-full"
+                    class="shaped-outlined w-full bg-white"
                     variant="outlined"
                     label={$t('website.register.password')} bind:value={password} type="password" id="input-password">
                 <HelperText persistent slot="helper">
@@ -151,7 +151,7 @@
             </Textfield>
         </div>
          <div class="my-4">
-            <Textfield       bind:invalid={error.passwordFlag}    class="shaped-outlined w-full"
+            <Textfield       bind:invalid={error.passwordFlag}    class="shaped-outlined w-full bg-white"
                                variant="outlined" label={$t('website.register.password-repeat')} bind:value={passwordRepeat} type="password" id="input-password-confirm"
             >
                 <HelperText persistent slot="helper">
@@ -164,7 +164,7 @@
         <div class="my-4">
             <Textfield
                     bind:invalid={error.charnameFlag}
-                    class="shaped-outlined w-full"
+                    class="shaped-outlined w-full bg-white"
                                variant="outlined" label={$t('website.register.name')} bind:value={charname}  type="text" id="input-name">
                 <HelperText persistent slot="helper">
                     {$t('website.register.name-small')}
@@ -176,7 +176,7 @@
            </div>
 
         <div class="my-4">
-            <Select class="shaped-outlined w-full"
+            <Select class="shaped-outlined w-full bg-white"
                     variant="outlined" bind:value={race} id="select-race" label={$t('website.register.select-race')}>
                 {#each data.races as race}
                     <Option value={race}>{$t('race.' + race)}</Option>

@@ -62,7 +62,7 @@
                 </ul>
 
             <div class="my-4">
-                <Select bind:value={currentLocale} label={$t('website.nav.choose_language')}>
+                <Select class="bg-white" bind:value={currentLocale} label={$t('website.nav.choose_language')}>
                     {#each locales as locale}
                         <Option value={locale}>{$t('locale.'+locale)}</Option>
                     {/each}
