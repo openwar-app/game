@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity, Int32, PrimaryGeneratedColumn, Unique} from "typeorm"
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn, Unique} from "typeorm"
 import type {UserData} from "$lib/shared/User/UserData";
 import {RaceEnum} from "$lib/shared/races/RaceEnum";
 import type {MultiPolygon} from "polygon-clipping";
