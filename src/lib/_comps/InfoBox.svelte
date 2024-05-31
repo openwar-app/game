@@ -2,7 +2,7 @@
     .Monsterlist, .Itemlist, .FieldDescription {
         border: 2px solid black;
         border-radius: 5px;
-        margin: 2em 0.25em;
+        @apply mb-4 mx-0.5;
 
         .Header {
             padding: 3px;
@@ -54,7 +54,7 @@
 
 
 </script>
-<div class="FieldDescription">
+<div class="FieldDescription mt-0">
     <div class="Header">
         <h2>{$t('game.infobox.description')}</h2>
     </div>

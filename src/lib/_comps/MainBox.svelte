@@ -29,7 +29,7 @@
     }
 </style>
 
-<div class="chatbox">
+<div class="chatbox pointer-events-none">
     <ChatBox bind:this={chatbox}></ChatBox>
 </div>
 <div class="mapbox">

@@ -11,6 +11,7 @@ body {
     @apply font-open-sans;
     @apply bg-neutral-100;
     transform: translateZ(0);
+    overflow: hidden;
 }
 
 

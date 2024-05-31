@@ -28,6 +28,8 @@ export class ClientConnection {
     }
 
     async onPacketPlayerMoveTo(packet: PlayerMoveTo) {
+
+
         let x: number = 0, y: number = 0;
         if (packet.direction.x < 0) x = -1;
         if (packet.direction.y < 0) y = -1;
@@ -35,6 +37,7 @@ export class ClientConnection {
         if (packet.direction.y > 0) y = 1;
         if (x != 0 || y != 0) {
             let user = await this.getUser() as User;
+            if(user.getStunnedUntil() > new Date()) return;
             const newPos = {
                 x: user.getPosition().x + x,
                 y: user.getPosition().y + y
@@ -44,11 +47,13 @@ export class ClientConnection {
             if(!(await field.getLogic()).isEnterable()) return;
 
 
-
+            user.setStunnedUntil(new Date(Date.now() + 5000));
             user.setPosition(newPos);
         }
     }
 
+
+    // @deprecated
     async sendUserData() {
         let user = await this.getUser();
         this.send(new Packet.UserData(user as User));

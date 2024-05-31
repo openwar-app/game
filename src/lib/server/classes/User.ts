@@ -8,6 +8,7 @@ import polygonClipping, {type MultiPolygon, type Polygon} from 'polygon-clipping
 import {MapView} from "$lib/shared/network/MapView";
 import type {UserStats} from "$lib/shared/User/UserStats";
 import Races from "$lib/shared/races";
+import {Packet} from "$lib/shared/network";
 
 export class User {
 
@@ -146,7 +147,11 @@ export class User {
 
 
         this._user.save();
-        this.connections.forEach(con => con.sendUserData());
+        this.sendUserData();
+    }
+
+    sendUserData() {
+        this.sendPacket(new Packet.UserData(this));
     }
 
     getMapView() {
@@ -158,10 +163,10 @@ export class User {
     }
 
     getXP(): number {
-        return this._user.xp
+        return this._user.xp;
     }
 
-    async sendPacket(packet: NetPacket) {
+    sendPacket(packet: NetPacket) {
         this.connections.forEach(connection => {
             connection.send(packet)
         });
@@ -181,5 +186,25 @@ export class User {
 
     getRace() {
         return Races[this.getRaceID()];
+    }
+
+    async addXP(xp: number) {
+        this._user.xp += xp;
+        await this._user.save();
+        this.sendUserData();
+    }
+
+    getLevel() {
+        return this._user.level;
+    }
+
+
+    getStunnedUntil() {
+        return this._user.stunnedUntil;
+    }
+
+    async setStunnedUntil(date: Date) {
+        this._user.stunnedUntil = date;
+        await this._user.save();
     }
 }

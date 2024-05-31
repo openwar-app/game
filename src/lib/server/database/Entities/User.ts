@@ -29,6 +29,9 @@ export default class User extends BaseEntity implements UserData {
     @Column("int", {default: 0})
     xp!: number;
 
+    @Column("int", {default: 1})
+    level!: number;
+
     @Column("int", {default: 100})
     posx!: number;
 
@@ -41,6 +44,8 @@ export default class User extends BaseEntity implements UserData {
     @Column("json", {default: []})
     mapView!: MultiPolygon
 
+    @Column("date", {default: () => "CURRENT_TIMESTAMP"})
+    stunnedUntil!: Date
 
 
 

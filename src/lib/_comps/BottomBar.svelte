@@ -35,9 +35,14 @@
     let maxLife = $derived(ClientData?.userData?.stats.maxHp ?? 0);
     let maxMana = $derived(ClientData?.userData?.stats.maxMana ?? 0);
 
+    let xp = $derived(ClientData?.userData?.xp ?? 0);
+    let xpNeeded = $derived(XP_FOR_LEVEL((ClientData?.userData?.level ?? 1)+1));
+    let xpPerc = $derived((xp / xpNeeded) * 100);
 
     import SettingsButtonPNG from "./BottomBar/bb_bar_menu_btn_settings.png";
     import ItemsButtonPNG from "./BottomBar/bb_bar_menu_btn_items.png";
+    import {derived} from "svelte/store";
+    import {XP_FOR_LEVEL} from "$lib/shared/Level";
 
 </script>
 
@@ -149,6 +154,37 @@
         }
     }
 
+
+    .xpBar {
+        pointer-events: all;
+        position: absolute;
+        bottom:0;
+        background: black;
+        left: 116px;
+        right: 116px;
+        height: 46px;
+
+        .filled {
+            position: absolute;
+            background: green;
+            height:100%;
+            width:0;
+            transition: 300ms ease all;
+        }
+
+        &:hover .label {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.5em;
+            text-shadow: 2px 2px 2px black;
+        }
+    }
 </style>
 <div id="bottomBar" clasS="pointer-events-none" bind:this={outerWrapper}>
 
@@ -160,7 +196,10 @@
             </div>
 
         </div>
-
+        <div class="xpBar">
+            <div class="filled" style:width={`${xpPerc}%`}></div>
+            <div class="label">{xp.toLocaleString()} / {xpNeeded.toLocaleString()}</div>
+        </div>
 
         <div class="mana globe">
             <div>
@@ -170,6 +209,7 @@
         </div>
 
         <div class="innerWrapper" style="width:{originalWidth}px; height: {originalHeight}px;">
+
             <div class="bottomBarDesign">
                 <div class="settingsButton">
                     <img src={SettingsButtonPNG} alt="Settings" class="h-full w-full"/>

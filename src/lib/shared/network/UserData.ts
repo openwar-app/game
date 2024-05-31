@@ -17,6 +17,7 @@ export class UserData extends NetPacket implements IUserData {
         this.posy = user.getPosition().y;
         this.race = user.getRaceID();
         this.xp = user.getXP();
+        this.level = user.getLevel();
         this.life = user.getCurrentLife();
         this.stats = user.calculateStats();
     }
@@ -27,6 +28,7 @@ export class UserData extends NetPacket implements IUserData {
     race: keyof typeof RaceEnum;
     xp: number;
     life: number;
+    level: number;
 
     stats: UserStats
 }
