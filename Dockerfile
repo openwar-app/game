@@ -18,7 +18,7 @@ RUN npm install --force
 RUN npm run build
 
 
-FROM node:22.2-bookworm AS production
+FROM node:22.10-bookworm AS production
 WORKDIR /app
 COPY ./package-lock.json /app
 COPY ./package.json /app
